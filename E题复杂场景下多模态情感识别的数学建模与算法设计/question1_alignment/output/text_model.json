@@ -1,0 +1,11 @@
+{
+  "model": "distilbert-base-uncased",
+  "feature_dim": 768,
+  "pooling": "mean of final four hidden layers, then overlap-weighted pooling into common time bins",
+  "token_timing": "monotone transcript allocation weighted by token length and punctuation pause",
+  "transformers_version": "4.29.2",
+  "torch_version": "1.8.0",
+  "device": "cuda",
+  "cuda_available": true,
+  "cuda_device": "GeForce GTX 1650 Ti"
+}

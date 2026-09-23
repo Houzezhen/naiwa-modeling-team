@@ -1,0 +1,4 @@
+av==18.1.0
+numpy>=2.0,<3
+opencv-python-headless==4.10.0.84
+openpyxl==3.1.5

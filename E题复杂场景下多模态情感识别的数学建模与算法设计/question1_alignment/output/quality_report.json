@@ -1,0 +1,65 @@
+{
+  "status": "pass",
+  "sample_count": 100,
+  "unique_id_count": 100,
+  "shapes": {
+    "text": [
+      100,
+      50,
+      768
+    ],
+    "audio": [
+      100,
+      50,
+      74
+    ],
+    "vision": [
+      100,
+      50,
+      35
+    ],
+    "time_bounds": [
+      100,
+      50,
+      2
+    ],
+    "text_mask": [
+      100,
+      50
+    ],
+    "audio_mask": [
+      100,
+      50
+    ],
+    "vision_mask": [
+      100,
+      50
+    ]
+  },
+  "all_finite": {
+    "text": true,
+    "audio": true,
+    "vision": true,
+    "time_bounds": true
+  },
+  "mask_coverage": {
+    "text_mask": 1.0,
+    "audio_mask": 0.9938,
+    "vision_mask": 0.998
+  },
+  "duration_s": {
+    "min": 2.256999969482422,
+    "median": 6.7224931716918945,
+    "max": 29.288021087646484
+  },
+  "label_counts": {
+    "Positive": 57,
+    "Neutral": 25,
+    "Negative": 18
+  },
+  "typical_sample_index": 54,
+  "typical_sample_id": "-tPCytz4rww$_$18",
+  "output_file": "question1_aligned_50.pkl",
+  "output_size_bytes": 17774465,
+  "output_sha256": "de3411aed241cba2235a175730a671771d6f59abbbfa17273c0d680f7c446ae7"
+}

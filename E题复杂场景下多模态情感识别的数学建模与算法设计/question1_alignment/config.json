@@ -1,0 +1,16 @@
+{
+  "num_bins": 50,
+  "audio_sample_rate": 16000,
+  "audio_dim": 74,
+  "vision_dim": 35,
+  "text_dim": 768,
+  "text_model": "distilbert-base-uncased",
+  "text_layer_pooling": "mean_last_4_hidden_layers",
+  "vision_max_width": 320,
+  "face_detector": "OpenCV Haar frontal face cascade",
+  "classification_mapping": {
+    "Negative": 0,
+    "Neutral": 1,
+    "Positive": 2
+  }
+}
