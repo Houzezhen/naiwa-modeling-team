@@ -1,0 +1,12 @@
+{
+  "validation_metrics": {
+    "accuracy": 0.6373626373626373,
+    "f1_macro": 0.601580292794028,
+    "mae": 0.6122622476829277,
+    "pearson": 0.6296277039079228
+  },
+  "samples": 128,
+  "mean_top_attention_drop": 0.01091947111611565,
+  "mean_random_drop": 0.0012151120851437251,
+  "top_over_random": 0.009704359030971926
+}

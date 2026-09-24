@@ -1,0 +1,19 @@
+{
+  "feature_version": "aligned_50",
+  "text_input": "text_bert (3x50)",
+  "text_model": "distilbert-base-uncased",
+  "revision": "12040accade4e8a0f71eabdb258fecc2e7e948be",
+  "feature_rule": "mean_last_four_hidden_layers_float32_zero_masked_tokens",
+  "checkpoint": "q2_baseline\\aligned_text_bert_run_bidir\\fusion_best.pt",
+  "checkpoint_sha256": "39dd5bca41165dac9b6203e4191ffe138fa9b0f113edfe30a50811591eaa1a6c",
+  "sample_count": 30,
+  "class_counts": {
+    "Negative": 6,
+    "Neutral": 3,
+    "Positive": 21
+  },
+  "mean_strength": 0.18582623054583866,
+  "metrics": null,
+  "metrics_note": "Attachment 3 has no labels; accuracy/F1/MAE/Pearson undefined.",
+  "prediction_csv": "q2_baseline\\aligned_text_bert_run_bidir\\附件3_统一编码预测结果.csv"
+}

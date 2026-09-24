@@ -1,0 +1,16 @@
+{
+  "input": "emotion-transfer-pilot\\aligned_50.pkl",
+  "input_sha256": "66e867aa74bc70a844e806e5571e371c9abb4a35f9e2887ce9b4d97ff2cb8fcd",
+  "derived": "emotion-transfer-pilot\\aligned_text_bert_features.pkl",
+  "derived_sha256": "40b0b519290aed84595482e4601de6a2bf53915760b2329366b3b69e05049c21",
+  "model": "distilbert-base-uncased",
+  "revision": "12040accade4e8a0f71eabdb258fecc2e7e948be",
+  "feature_rule": "mean_last_four_hidden_layers_float32_zero_masked_tokens",
+  "feature_version": "aligned_50",
+  "text_interface": "text_bert[N,3,50]",
+  "splits": {
+    "train": 3395,
+    "valid": 728,
+    "test": 727
+  }
+}
