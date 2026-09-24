@@ -5,5 +5,7 @@
 - `reference_material/`：2025 年优秀论文参考资料及压缩包。
 - `temp_renders/`：PDF 页面渲染预览和检查图片。
 - `runtime_caches/`：Python `__pycache__`、补丁测试文件和 smoke run。
+- `template_reference/`：未参与最终论文编译的模板示例、模板预览和临时文件。
+- `draft_documents/`：未作为最终 PDF 源文件使用的 Word 草稿。
 
 最终论文源、最终模型结果、图表脚本和交付 PDF 不在此目录。归档内容默认不上传 Git；其目录结构仅用于本机整理。
