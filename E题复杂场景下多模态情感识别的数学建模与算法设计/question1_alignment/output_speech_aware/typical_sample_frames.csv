@@ -1,0 +1,6 @@
+﻿sample_id,bin_index,bin_start_s,bin_end_s,frame_timestamp_s,nearest_frame_error_s,frame_file
+-tPCytz4rww$_$18,0,0.000000,0.132900,0.066667,0.000000,typical_sample_frames\bin_00_time_0.067s.jpg
+-tPCytz4rww$_$18,12,1.594797,1.727697,1.666667,0.000000,typical_sample_frames\bin_12_time_1.667s.jpg
+-tPCytz4rww$_$18,25,3.322494,3.455393,3.400000,0.000000,typical_sample_frames\bin_25_time_3.400s.jpg
+-tPCytz4rww$_$18,37,4.917290,5.050190,5.000000,0.000000,typical_sample_frames\bin_37_time_5.000s.jpg
+-tPCytz4rww$_$18,49,6.512087,6.644987,6.566667,0.000000,typical_sample_frames\bin_49_time_6.567s.jpg

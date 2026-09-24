@@ -1,0 +1,57 @@
+{
+  "schema_version": "question1-alignment-metrics-v1",
+  "sample_count": 100,
+  "window_count_per_sample": 50,
+  "window_total": 5000,
+  "mask_coverage": {
+    "text": 0.5868,
+    "audio": 0.99,
+    "vision": 0.998,
+    "speech_candidate": 0.8674
+  },
+  "alignment_status_counts": {
+    "ctc_aligned_unverified": 80,
+    "ctc_low_confidence": 18,
+    "transcript_audio_conflict": 2
+  },
+  "alignment_status_rates": {
+    "ctc_aligned_unverified": 0.8,
+    "ctc_low_confidence": 0.18,
+    "transcript_audio_conflict": 0.02
+  },
+  "temporal_invariants_sample_rate": {
+    "starts_at_zero_rate": 1.0,
+    "contiguous_windows_rate": 1.0,
+    "ends_at_media_duration_rate": 1.0,
+    "positive_window_rate": 1.0
+  },
+  "text_alignment_records": 100,
+  "text_alignment_valid_bin_match_rate": 1.0,
+  "lexical_span_count": 1629,
+  "lexical_span_boundary_in_range_rate": 1.0,
+  "lexical_span_positive_duration_rate": 1.0,
+  "sample_monotonic_span_order_rate": 1.0,
+  "sample_nonoverlapping_span_rate": 1.0,
+  "token_ctc_confidence": {
+    "count": 1629,
+    "mean": 0.9121236242753131,
+    "median": 0.9827794631322225,
+    "p90": 0.9996069852511088,
+    "min": 1.289355077460641e-05,
+    "max": 0.999991238117218
+  },
+  "lexical_spans_by_status": {
+    "ctc_aligned_unverified": 1629,
+    "ctc_low_confidence": 0,
+    "transcript_audio_conflict": 0
+  },
+  "gold_standard_metrics": {
+    "word_onset_mae_ms": null,
+    "word_offset_mae_ms": null,
+    "boundary_within_10ms_rate": null,
+    "boundary_within_20ms_rate": null,
+    "boundary_within_50ms_rate": null,
+    "word_interval_iou": null,
+    "reason": "No manually annotated word-level start/end timestamps are available."
+  }
+}

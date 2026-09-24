@@ -1,0 +1,15 @@
+{
+  "model": "distilbert-base-uncased",
+  "model_revision": "12040accade4e8a0f71eabdb258fecc2e7e948be",
+  "feature_dim": 768,
+  "pooling": "mean of final four hidden layers, then overlap-weighted pooling into common time bins",
+  "token_timing": "CTC word alignment intersected with energy activity; low-confidence and audio-conflict samples have no text timestamps",
+  "ctc_model": "facebook/wav2vec2-base-960h",
+  "ctc_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+  "ctc_min_mean_label_posterior": 0.5,
+  "transformers_version": "4.29.2",
+  "torch_version": "1.8.0",
+  "device": "cuda",
+  "cuda_available": true,
+  "cuda_device": "GeForce GTX 1650 Ti"
+}

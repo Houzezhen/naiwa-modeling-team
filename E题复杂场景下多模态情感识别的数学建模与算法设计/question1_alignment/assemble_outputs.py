@@ -59,6 +59,8 @@ def write_typical_csv(
             "text_valid",
             "audio_valid",
             "audio_rms_mean",
+            "audio_coverage",
+            "speech_candidate_coverage",
             "vision_valid",
             "vision_timestamp_s",
             "face_detected",
@@ -77,6 +79,8 @@ def write_typical_csv(
                     "text_valid": int(text_mask[sample_index, bin_index]),
                     "audio_valid": int(base["audio_mask"][sample_index, bin_index]),
                     "audio_rms_mean": f"{float(base['audio'][sample_index, bin_index, 72]):.8f}",
+                    "audio_coverage": f"{float(base.get('audio_coverage', np.ones_like(base['audio_mask']))[sample_index, bin_index]):.6f}",
+                    "speech_candidate_coverage": f"{float(base.get('speech_coverage', np.zeros_like(base['audio_mask']))[sample_index, bin_index]):.6f}",
                     "vision_valid": int(base["vision_mask"][sample_index, bin_index]),
                     "vision_timestamp_s": (
                         f"{float(base['vision_timestamps'][sample_index, bin_index]):.6f}"
@@ -122,15 +126,37 @@ def main() -> None:
         "durations": np.asarray(base["durations"], dtype=np.float32),
         "source_file": list(base["source_file"]),
     }
+    speech_aware = "speech_mask" in base
+    if speech_aware:
+        for key in ("audio_coverage", "speech_coverage", "speech_mask"):
+            all_data[key] = np.asarray(base[key])
+        all_data["alignment_status"] = np.asarray(
+            [text_alignment[sample_id]["alignment_status"] for sample_id in all_data["id"]]
+        )
+        with (args.work_dir / "feature_manifest.csv").open("r", encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fields = reader.fieldnames
+            rows = list(reader)
+        index_by_id = {sample_id: index for index, sample_id in enumerate(all_data["id"])}
+        for row in rows:
+            if row["modality"] == "text":
+                row["valid_bins"] = str(int(text_mask[index_by_id[row["sample_id"]]].sum()))
+                row["valid_duration_s"] = f"{float(text_mask[index_by_id[row['sample_id']]].sum()) * float(all_data['durations'][index_by_id[row['sample_id']]]) / text_mask.shape[1]:.6f}"
+                row["extractor"] = "distilbert-base-uncased; CTC word timestamps with acoustic-activity support; masked on conflict/low confidence"
+        with (args.work_dir / "feature_manifest.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
     payload = {
         "all": all_data,
         "metadata": {
-            "schema_version": "question1-aligned-50-v1",
+            "schema_version": "question1-speech-aware-50-v2" if speech_aware else "question1-aligned-50-v1",
             "alignment_rule": "50 equal-duration half-open bins [kT/50,(k+1)T/50); the final bin includes T",
             "padding_rule": "all-zero vector only when the matching modality mask is zero",
             "classification_mapping": {"Negative": 0, "Neutral": 1, "Positive": 2},
             "feature_dimensions": {"text": 768, "audio": 74, "vision": 35},
             "text_extractor": text_model,
+            "speech_alignment_rule": "CTC forced word alignment intersected with energy-activity candidates; unverified confidence-based rejection" if speech_aware and text_model.get("ctc_model") else "energy-candidate intervals; weak text alignment" if speech_aware else None,
             "audio_extractor": "16 kHz mono; 20 MFCC mean/std, 12 chroma means, 8 spectral descriptors mean/std, F0/ZCR/RMS mean/std",
             "vision_extractor": "OpenCV Haar face geometry, intensity/color/texture, face-region symmetry, dense optical flow",
             "software": {"python": platform.python_version(), "numpy": np.__version__, "opencv": cv2.__version__},
@@ -150,6 +176,15 @@ def main() -> None:
         source = args.work_dir / source_name
         destination = args.output_dir / source_name
         destination.write_bytes(source.read_bytes())
+    if speech_aware:
+        with (args.work_dir / "speech_activity.jsonl").open("r", encoding="utf-8") as handle:
+            speech_records = [json.loads(line) for line in handle]
+        with (args.output_dir / "speech_activity.jsonl").open("w", encoding="utf-8") as handle:
+            for record in speech_records:
+                alignment = text_alignment[record["sample_id"]]
+                record["alignment_status"] = alignment["alignment_status"]
+                record["aligned_text_bins"] = alignment["valid_bins"]
+                handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     typical_index = choose_typical_sample(base)
     write_typical_csv(args.output_dir / "typical_sample_alignment.csv", base, text_mask, text_alignment, typical_index)
@@ -169,6 +204,8 @@ def main() -> None:
             "max": float(all_data["durations"].max()),
         },
         "label_counts": dict(Counter(str(value) for value in all_data["annotations"])),
+        "alignment_status_counts": dict(Counter(str(value) for value in all_data["alignment_status"])) if speech_aware else {},
+        "speech_candidate_coverage": float(all_data["speech_mask"].mean()) if speech_aware else None,
         "typical_sample_index": typical_index,
         "typical_sample_id": all_data["id"][typical_index],
         "output_file": output_pkl.name,
