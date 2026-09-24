@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="210.96pt" version="1.1" viewBox="0 0 678.96 210.96" width="678.96pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 210.96 
+L 678.96 210.96 
+L 678.96 0 
+L 0 0 
+z
+" style="fill:#ffffff;"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path clip-path="url(#p18df06a289)" d="M 150.0804 115.010182 
+L 191.412497 115.010182 
+L 191.412497 105.48 
+L 150.0804 105.48 
+z
+" style="fill:#ba5336;"/>
+   </g>
+   <g id="patch_3">
+    <path clip-path="url(#p18df06a289)" d="M 150.0804 136.453091 
+L 158.770083 136.453091 
+L 158.770083 126.922909 
+L 150.0804 126.922909 
+z
+" style="fill:#087c70;"/>
+   </g>
+   <g id="patch_4">
+    <path clip-path="url(#p18df06a289)" d="M 150.0804 157.896 
+L 166.514618 157.896 
+L 166.514618 148.365818 
+L 150.0804 148.365818 
+z
+" style="fill:#24548e;"/>
+   </g>
+   <g id="text_1">
+    <text style="fill:#24548e;font-family:SimHei;font-size:12px;font-style:normal;font-weight:bold;text-anchor:start;" transform="rotate(-0, 20.4912, 28.642909)" x="20.4912" y="28.642909">验证集代表性样本：第6条</text>
+   </g>
+   <g id="text_2">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 20.4912, 57.233455)" x="20.4912" y="57.233455">真实：消极  预测：消极  置信度：0.819</text>
+   </g>
+   <g id="text_3">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:bold;text-anchor:start;" transform="rotate(-0, 20.4912, 88.206545)" x="20.4912" y="88.206545">模态门控权重</text>
+   </g>
+   <g id="text_4">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 20.4912, 111.436364)" x="20.4912" y="111.436364">文本  0.622</text>
+   </g>
+   <g id="text_5">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 20.4912, 132.879273)" x="20.4912" y="132.879273">语音  0.131</text>
+   </g>
+   <g id="text_6">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 20.4912, 154.322182)" x="20.4912" y="154.322182">视觉  0.247</text>
+   </g>
+   <g id="text_7">
+    <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:bold;text-anchor:start;" transform="rotate(-0, 339.48, 88.206545)" x="339.48" y="88.206545">局部遮挡敏感证据：前三窗口</text>
+   </g>
+   <g id="text_8">
+    <text style="fill:#16243a;font-family:SimHei;font-size:8.5px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 339.48, 111.436364)" x="339.48" y="111.436364">1. 文本  第22窗   得分 0.00407   下降 +0.034</text>
+   </g>
+   <g id="text_9">
+    <text style="fill:#16243a;font-family:SimHei;font-size:8.5px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 339.48, 132.879273)" x="339.48" y="132.879273">2. 语音  第02窗   得分 0.00001   下降 +0.001</text>
+   </g>
+   <g id="text_10">
+    <text style="fill:#16243a;font-family:SimHei;font-size:8.5px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 339.48, 154.322182)" x="339.48" y="154.322182">3. 视觉  第02窗   得分 0.00000   下降 +0.000</text>
+   </g>
+   <g id="text_11">
+    <text style="fill:#505d70;font-family:SimHei;font-size:8px;font-style:normal;font-weight:normal;text-anchor:start;" transform="rotate(-0, 20.4912, 193.634182)" x="20.4912" y="193.634182">展示规则：首条分类正确、三模态均有效且最高注意力窗口遮挡后置信度下降至少0.01的样本。</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p18df06a289">
+   <rect height="196.56" width="664.56" x="7.2" y="7.2"/>
+  </clipPath>
+ </defs>
+</svg>

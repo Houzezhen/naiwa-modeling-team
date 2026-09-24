@@ -1,0 +1,5 @@
+﻿metric,baseline,final,delta_final_minus_baseline,baseline_input,final_input,baseline_source,split
+准确率,0.612637,0.6373626373626373,0.02472563736263733,aligned_features.pkl,aligned_text_bert_features.pkl,q2_baseline/REPORT.md,attachment2 validation (n=728)
+宏平均调和分数,0.588115,0.601580292794028,0.013465292794027972,aligned_features.pkl,aligned_text_bert_features.pkl,q2_baseline/REPORT.md,attachment2 validation (n=728)
+平均绝对误差,0.616443,0.6122622476829277,-0.004180752317072267,aligned_features.pkl,aligned_text_bert_features.pkl,q2_baseline/REPORT.md,attachment2 validation (n=728)
+皮尔逊相关,0.624582,0.6296277039079228,0.005045703907922805,aligned_features.pkl,aligned_text_bert_features.pkl,q2_baseline/REPORT.md,attachment2 validation (n=728)

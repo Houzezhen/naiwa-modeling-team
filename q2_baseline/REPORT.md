@@ -1,4 +1,6 @@
-# 第二问模型实验报告
+# 第二问模型实验报告（历史实验与候选对比）
+
+> 本文件保留各候选模型的原始实验结果。由于 `residual_fusion.pt` 的附件2训练接口与附件3重建接口不一致，它不是最终合规主模型。当前最终主模型及其 baseline 对比以 `E题复杂场景下多模态情感识别的数学建模与算法设计/三个问题综合审查与最终结果报告.md` 第1.2节为准。
 
 ## 1. 评估说明
 
@@ -15,9 +17,9 @@
 | Residual fusion (`regression_weight=0.5`) | SSL encoder + 零初始化均值/方差残差旁路 | 0.622253 | **0.610330** | 0.623941 | 0.601396 | **主模型** |
 | Residual fusion (`regression_weight=1.0`) | 同上，提高回归损失权重 | **0.627747** | 0.605091 | 0.632152 | 0.615692 | Accuracy 对比最优 |
 
-## 3. 主模型选择
+## 3. 旧接口实验中的主模型选择
 
-最终主模型选择：
+在旧接口实验内部，验证集选择的候选模型为：
 
 ```text
 q2_multiview_residual_fusion/fusion_best.pt
@@ -55,7 +57,7 @@ q2_multiview_residual_reg1/fusion_best.pt
 
 单纯依靠无标签自监督表征直接进行情绪融合效果较差，初始 SSL fusion 的 Macro-F1 和回归指标均下降。加入原始特征残差旁路后，分类效果明显恢复并超过 baseline，说明 SSL 表征可以作为辅助初始化，但不能完全替代情绪相关的原始特征路径。
 
-当前结论是：分类主任务采用 `q2_multiview_residual_fusion/fusion_best.pt`；原始 `q2_baseline_final/best.pt` 继续作为回归和整体稳定性的参考模型；`regression_weight=1.0` 版本作为 Accuracy 最高的对比模型保留。
+当前结论是：上述模型只用于旧接口实验对照；它不承担本项目最终主模型角色。最终主模型采用综合报告第1.2节的统一编码可解释融合 checkpoint。
 
 ## 6. 环境备注
 

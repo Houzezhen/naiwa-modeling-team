@@ -1,0 +1,631 @@
+简单解读为“屏蔽后性能提高”，因为某些窗口可能包含噪声或与目标无关的信息。更合
+理的结论是：模型在当前验证集上没有把所有中间窗口都视为必要证据；视觉中间窗口对
+Macro-F1 最敏感，文本和音频屏蔽主要改变连续强度误差。掩码机制因此提供了比“全部
+模态必须存在”更现实的缺失建模方式。
+
+6.5 验证集优势与 test 波动
+
+   验证集上最终模型四项指标均超过固定 baseline，但独立 test 复核并未保持四项全面
+优势。表 6.9 将两种数据用途并列展示。验证集与 test 的差异说明，复杂模型的有效性应
+
+                 表 6.9   验证集选择结果与 test 独立复核的区别
+
+
+                         Validation                       Test
+  模型              Acc     F1    MAE        ρ     Acc     F1      MAE     ρ
+
+  Fixed baseline 0.6126 0.5881 0.6164 0.6246   0.6506 0.6041 0.6576 0.6532
+  Final model   0.6374 0.6016 0.6123 0.6296    0.6644 0.5907 0.6588 0.6530
+
+
+以数据划分为条件进行表述。本文主张“统一接口最终模型在附件 2 验证集四项优于固定
+baseline”，而不主张“所有外部样本四项均优于”。这种写法虽然比只报一个漂亮数字更保
+守，却更符合数学建模论文对实验边界和数据泄露的要求。
+
+6.6 附件 4 案例复核
+
+   附件 4 无标签，但可以对结构化输出进行案例层面的人工复核。表 6.10 选择若干具有
+不同极性和强度的样本，记录类别、强度和三个门控贡献。表中正负强度并不是概率，而
+是连续回归头输出，因此可以出现负值。案例复核有三个作用。第一，它证明模型输出不
+仅包含一个类别标签，还包含可供审阅的强度和模态贡献。第二，ID 02、04 的语音或视
+觉贡献相对上升，说明文本并非唯一通道。第三，ID 03 的负强度与 Neutral 类别并不矛盾，
+说明极性和强度是两个相关但不同的任务。由于缺少标签，本文不对这些个案作“预测正
+确”的判断，只报告结构化输出和解释字段。
+
+6.7 解释证据的字段级复核
+
+   每条证据同时记录 attention score、modality contribution、occlusion drop 和 regression
+change。若某个窗口注意力高但遮挡下降接近 0，它会被综合证据分数压低；若注意力一
+般但遮挡后类别置信度显著下降，则该窗口仍可能进入 Top-6。这种乘积结构比单独使用
+
+
+
+
+                                      22
+                    表 6.10    附件 4 代表性样本的结构化预测
+
+
+              ID 类别             强度 主模态            文本      语音      视觉
+
+              01   Neutral     0.255 text        0.726    0.110 0.164
+              02   Negative    0.041 text        0.461 0.409 0.130
+              03   Neutral    -0.491 text        0.658 0.125 0.217
+              04   Negative -0.594 text          0.611    0.115 0.274
+              05   Positive    1.022 text        0.709 0.109 0.182
+              06   Positive    0.052 text        0.550 0.298 0.152
+
+
+注意力更谨慎。
+
+       log evidenceq,k = log(αq,k + ϵ) + log(δeq + ϵ) + log(max(∆q,k , 0) + ϵ).   (6.16)
+
+在实际输出中不直接使用对数值，而保留原始分量，便于审阅者追溯。图 7.7 显示 Top 窗
+口的平均置信度下降约为随机窗口的 9 倍，说明解释排序至少在行为层面具有区分度。
+
+6.8 统计推断边界
+
+  本文当前训练记录主要来自固定随机种子 42 的单次训练，因此不能把一个验证集差
+值直接写成跨种子显著性。由于数据量较大，指标可作为工程比较依据；但如果需要统计
+推断，应重复不同 seed，或者进行分层交叉验证并报告均值、标准差和置信区间。本文选择
+不虚构置信区间，将重复实验列为后续工作，并把可复现的 seed、checkpoint 和原始 JSON
+作为审计证据。
+
+6.9 本节小结
+
+  本节从数据结构、接口审计、综合选择分数、缺失敏感性、验证—test 差异和案例证
+据六个方面补充了实验解释。最终模型的价值不是在任何划分上都全面胜出，而是在同一
+输入接口下提供了一个兼顾性能、复杂度和证据追踪的统一方案。
+
+
+                7 问题三：可解释性情感预测与证据追踪
+
+7.1 解释对象与解释边界
+
+  最终模型同时输出类别、强度、三个模态门控权重和模态内时间注意力。问题 3 的目
+标不是重新定义人类情感机制，而是对模型已作出的预测给出可回溯证据。本文将解释定
+
+                                         23
+义为输入扰动引起的模型输出变化，并把它分为模态级和时间窗级两个层次。这样既利用
+了模型内部的注意力与门控，也用外部反事实遮挡验证它们是否具有实际敏感性。
+
+7.2 模态消融贡献
+
+   对每个附件 4 样本，先得到完整输入的目标类别置信度 pf ull ，再分别屏蔽文本、语音
+和视觉，得到 p−q 。定义
+                            δq = max (pf ull − p−q , 0) .         (7.17)
+
+为避免不同模态下降尺度影响比较，将三个非负下降值归一化：
+                                           δq
+                               δeq = P              .             (7.18)
+                                         r∈M δr + ϵ
+
+在模型内部，门控权重 βq 提供样本级相对作用；在报告中同时输出消融贡献和门控贡献，
+防止单独把注意力权重解释成因果贡献。
+
+7.3 局部时间窗反事实
+
+   对模态 q 的第 k 个窗口，将其特征置零并把掩码置为 0，保持其他模态和其他窗口不
+变。目标类别置信度下降为
+                              ∆q,k = pf ull − pmask
+                                               q,k .              (7.19)
+
+综合证据得分定义为
+                      evidenceq,k = αq,k · δeq · max(∆q,k , 0).   (7.20)
+
+对每条样本取 Top-6 证据，并将窗口索引转换为
+                                             
+                                  kT (k + 1)T
+                 [tk , tk+1 ) =      ,          .
+                                  50    50
+视频证据再由 PyAV 按目标时间导出实际关键帧，清单记录源视频、目标时间、实际帧时
+间、误差和 SHA-256。
+
+7.4 解释验证
+
+   在附件 2 验证集随机抽取 128 条样本，对每个模态比较注意力最高窗口与一个随机窗
+口的置信度下降。最终结果为：最大影响窗口平均下降 0.010919，随机窗平均下降 0.001215，
+Top-Random 为 0.009704。正值表明注意力排序能够找到比随机位置更敏感的局部证据，但
+它仍然是模型行为解释，不等价于真实人类因果机制。
+
+7.5 附件 4 预测分布
+
+   附件 4 共 20 条无标签样本。最终模型预测类别为 Negative、Neutral、Positive 分别为
+6、3、11 条，连续强度平均值为 0.185826。文本贡献在多数样本中较高，但也存在语音和
+
+                                         24
+                                           Counterfactual evidence validation                                                               Attachment 4 modality contributions
+                                           0.0109                                                                            1.0
+
+                        0.010
+                                                                                                                             0.8
+                        0.008                                                                                                            0.662
+
+
+
+
+                                                                                                    Mean gate contribution
+ Mean confidence drop
+
+
+
+
+                                                                                                                             0.6
+                        0.006
+
+                                                                                                                             0.4
+                        0.004
+
+                                                                                                                             0.2                           0.181                0.157
+                        0.002
+                                                                       0.0012
+
+                        0.000                                                                                                0.0
+                                       Top attention                   Random                                                            Text              Audio              Vision
+                                         window                        window
+
+
+                                                        图 7.7      反事实解释验证与附件 4 模态贡献
+
+
+视觉贡献升高的样本，说明门控并未固定使用单一模态。
+
+                                        Attachment 4 predicted polarity                                                                     Attachment 4 continuous intensity
+                                                                             9                                                     mean=-0.131
+                                   8                                                                                 1.0
+                        8
+                                                                                                                     0.5
+
+                        6
+ Number of samples
+
+
+
+
+                                                                                     Predicted intensity
+
+
+
+
+                                                                                                                     0.0
+
+                                                                                                                     0.5
+                        4
+                                                         3                                                           1.0
+
+                        2                                                                                            1.5
+
+                                                                                                                     2.0
+                        0
+                                Negative               Neutral            Positive                                                 2.5       5.0   7.5    10.0 12.5    15.0      17.5   20.0
+                                                                                                                                                         Sample ID
+
+
+                                                    图 7.8        附件 4 无标签样本的预测极性与连续强度
+
+
+
+7.6 视频关键帧与文本证据
+
+                        对附件 4 输出的 Top 证据，最终产生 29 张视觉关键帧，均来自原始 MP4 的 PyAV 解
+码。图 7.9给出部分示例。文本证据仍采用转写词序与公共窗口的弱映射，因此在论文中
+只把它作为模型证据片段，不宣称词级真实时间定位。语音证据直接引用视频公共时间窗，
+具有更清晰的时间解释。
+
+7.7 解释结果的可用性
+
+                        解释输出不是一张孤立的热力图，而是结构化记录：样本 ID、排名、模态、窗口编号、
+注意力分数、模态贡献、遮挡下降、证据分数、回归变化、起止时间、文本片段和帧路径。
+
+                                                                                     25
+                   Representative visual evidence frames exported from top-ranked windows
+     02 rank 05 window 09                       02 rank 06 window 18
+                                                                                     03 rank 02 window 30
+
+
+
+
+     03 rank 03 window 31                       03 rank 04 window 29                 05 rank 01 window 07
+
+
+
+
+                            图 7.9      附件 4 代表性视觉证据关键帧
+
+
+这样的记录可以被审阅者逐条复核，也可以在后续系统中转化为主要参考模态、关键时间
+段和证据视频片段。
+
+
+
+
+                                                       26
+                 8 稳健性、复杂度与推广分析
+
+8.1 输入接口一致性的必要性
+
+  在多模态项目中，模型结构复杂并不自动意味着结论可信。若训练时使用预计算文本
+特征，附件 3 推理时又用另一套规则重建 768 维特征，则即使维度相同，也不能把输出当作
+同一模型的专项测试。本文将输入接口写成模型定义的一部分：文本编码器名称、revision、
+最后四层均值规则、有效 token 掩码、音频视觉的 aligned 版本以及训练集归一化统计量共
+同组成 feature manifest。任何改变都应产生新的版本号和新的结果表。
+
+8.2 缺失机制与掩码鲁棒性
+
+  掩码的作用不是简单抹除信息，而是将信息不存在显式传递给模型。在公共窗口内，
+如果语音末端没有真实帧，模型可以结合音频掩码和文本、视觉信息完成判断；如果视觉
+没有人脸但存在背景运动，视觉分支仍可利用非人脸特征。由于注意力计算对无效位置进
+行了屏蔽，缺失窗口不会通过 softmax 获得虚假的高权重。
+
+8.3 性能与复杂度平衡
+
+  固定 baseline 的优点是小、快、可解释，但它把所有窗口和模态的作用近似压缩成静
+态统计；端到端视频 Transformer 虽然表达能力更强，却需要更大数据规模和更高计算成
+本。本文采用三路 BiGRU、掩码注意力和门控融合，是一种中等复杂度方案。其参数量主
+要由三路投影和 GRU 决定，时间复杂度随 50 窗口线性增长，训练和推理仍可在常规 GPU
+或 CPU 环境完成。
+
+                 表 8.11 模型复杂度的定性比较
+
+
+方案               时间建模     缺失掩码 模态自适应    解释出口   复杂度
+
+固定对齐 baseline    无或弱       弱     无      统计对照   低
+单路 GRU 融合         有        部分    弱      隐状态    中
+最终层次融合模型         三路双向      显式   显式门控   注意力加遮挡 中高
+端到端视频 Transformer 时空注意力   可扩展   可扩展    需额外解释器 高
+
+
+
+8.4 误差来源与可推广方向
+
+  本文仍有四类限制。第一，文本词级定位没有人工 gold timestamp，当前结果只能称为
+弱或半强对齐；第二，附件 3 和附件 4 无标签，无法计算真正的专项泛化指标；第三，解
+
+                           27
+释方法是后验遮挡，不应夸大为因果证明；第四，附件 2 test 上最终模型并非四项全面胜
+出，说明数据划分与类别不平衡仍会影响结果。针对上述限制，可从四个方向改进：
+
+(1) 建立约 20 条样本的人工词级起止时间标注，计算边界 MAE、容差命中率和区间 IoU；
+(2) 在统一接口下进行多随机种子重复实验，报告均值、标准差和置信区间；
+(3) 将门控权重与遮挡下降联合建模，使用可学习的可靠性估计处理模态质量变化；
+(4) 在更大数据集上比较轻量化 TCN、Transformer encoder 和跨模态交互层，并以同一特征
+  manifest 保证公平。
+
+8.5 可复现性设计
+
+   本项目将报告、checkpoint、输入 manifest、输出 CSV 和图表脚本分别保存。最终模型的
+配置为隐藏维度 128、层数 2、Dropout 0.15、双向 GRU、回归损失权重 0.5、seed 42。特征编码
+使用 distilbert-base-uncased 固定 revision 12040accade4e8a0f71eabdb258fecc2e7e
+运行环境记录 PyTorch 1.8.0、Transformers 4.29.2、PyAV 12.3.0、NumPy 1.24.3。所有附件
+3 与附件 4 预测均明确标注无标签，不从中计算监督指标。
+
+
+
+
+                                  28
+                                              9 结论
+
+       本文针对复杂场景下三模态情感识别问题，建立了从数据审计、统一时间轴、层次融
+  合到证据追踪的一体化数学建模方案。主要结论如下：
+
+结论 1. 50 窗公共时间轴是多模态建模的基础。通过半开区间与重叠时长加权，文本、语音和
+     视觉可以映射到统一索引；通过显式 mask 可以区分真实零值与缺失。100 条样本的时
+     间结构和掩码一致性均通过审计，音视频覆盖率达到 99.00% 和 99.80%。
+结论 2. 统一输入接口是严格比较的前提。最终模型固定使用 text_bert+aligned_50，文
+     本编码版本、特征规则、掩码和归一化统计量在训练、验证和专项推理中保持一致；旧
+     residual 模型不再作为最终结果。
+结论 3. 三路双向 GRU、模态内时间注意力和样本级模态门控构成了适度复杂的层次融合模型。
+     它不只是增加参数，而是分别对应时间依赖、局部证据和模态可靠性三个问题。
+结论 4. 在附件 2 验证集上，最终模型四项报告指标均超过固定对齐 baseline：Accuracy 0.637363、
+     Macro-F1 0.601580、MAE 0.612262、Pearson 0.629627。
+结论 5. 通过注意力最高窗与随机窗的反事实遮挡比较，Top-Random 为 0.009704，说明模型可
+     为预测提供局部证据；但该结果仍属于模型行为解释，不能替代人工因果验证。
+
+  总体而言，本文最终方案在合规性、模型复杂度、预测性能和可解释性之间取得了平衡，
+  适合作为附件 2 监督预测与附件 4 专项证据生成的统一主模型。后续若获得人工词级时间
+  戳和更大规模标注数据，可进一步从对齐金标准和跨域泛化两方面提升模型可信度。
+
+
+                                             参考文献
+
+  [1] Cho K, van Merrienboer B, Gulcehre C, et al., Learning Phrase Representations using RNN
+      Encoder–Decoder for Statistical Machine Translation, Proceedings of EMNLP:1724-1734,
+      2014.
+  [2] Devlin J, Chang M W, Lee K, et al., BERT: Pre-training of Deep Bidirectional Transformers
+      for Language Understanding, Proceedings of NAACL-HLT, 4171-4186, 2019.
+  [3] Sanh V, Debut L, Chaumond J, et al., DistilBERT, a distilled version of BERT: smaller, faster,
+      cheaper and lighter, arXiv preprint arXiv:1910.01108, 2019.
+  [4] Bahdanau D, Cho K, Bengio Y, Neural Machine Translation by Jointly Learning to Align and
+      Translate, International Conference on Learning Representations, 2015.
+  [5] Graves A, Fernandez S, Gomez F, et al., Connectionist Temporal Classification: Labelling
+      Unsegmented Sequence Data with Recurrent Neural Networks, Proceedings of the 23rd Inter-
+      national Conference on Machine Learning, 369-376, 2006.
+
+
+                                                 29
+[6] Davis S, Mermelstein P, Comparison of parametric representations for monosyllabic word
+      recognition in continuously spoken sentences, IEEE Transactions on Acoustics, Speech, and
+      Signal Processing, 28(4):357-366, 1980.
+[7] Poria S, Cambria E, Bajpai R, et al., A review of affective computing research based on
+      function-component-content framework, IEEE Transactions on Affective Computing, 8(2):
+      144-168, 2017.
+[8] Goodfellow I, Bengio Y, Courville A, Deep Learning, MIT Press, 2016.
+[9] Mikolov T, Sutskever I, Chen K, et al., Distributed Representations of Words and Phrases and
+      their Compositionality, Advances in Neural Information Processing Systems, 26, 2013.
+
+
+
+                              附录 A        数据字典与文件清单
+
+A.1     输入、特征和标签
+
+                                     表 1.12     最终数据字典
+
+
+   字段                            形状或类型               说明
+
+   id                            字符串                 样本唯一标识，跨附件保持可追溯
+   text_bert                     (N, 3, 50)          token ID、attention mask 等文本输入
+   text                          (N, 50, 768)        固定 DistilBERT 规则生成的窗口文本
+                                                     表示
+   audio                         (N, 50, 74)         语音窗口级统计特征
+   vision                        (N, 50, 35)         视觉窗口级统计特征
+                     (N, )
+   classification_labels                             Negative、Neutral、Positive 编码为 0、1、
+                                                     2
+   regression_labels (N, )                           连续情感强度标签
+   aligned_50.pkl                pickle              附件 2 统一时间窗特征
+                     pickle
+   aligned_text_bert_features.pkl 统一文本接口派生特征
+   fusion_best.pt                checkpoint          严格统一接口的基础融合候选
+                     checkpoint
+   q3_explainable_best.pt                            最终统一编码复杂主模型
+
+
+A.2     最终输出文件
+
+
+                                                30
+                  表 1.13   论文与模型输出文件
+
+
+文件                         用途
+
+三个问题综合审查与最终结果 总体路线、风险与指标口径
+报告.md
+问 题 1_ 最 终 报 告 _ 特 征 公共时间轴和特征审计
+提取与时序对齐.md
+q2_baseline/问题 2_ 附 附件 3 统一接口专项推理
+件 3 测试报告.md
+                      最终模型验证指标
+q3_explainability/q3_aligned_text_bert_final/validation.json
+                      附件 4 预测与模态贡献
+attachment4/q3_predictions.csv
+                      附件 4 证据排名与遮挡变化
+attachment4/q3_explanations.csv
+                      视觉关键帧时间和哈希清单
+video_keyframe_manifest.csv
+make_figures.py            本论文全部图表生成脚本
+
+
+
+
+                                31
+                附录 B      指标定义、核验规则与算法细节
+
+B.1   时间轴核验伪代码
+
+                            alignment-check.py
+ for sample in samples:
+      T = sample.media_duration
+      windows = [(k*T/50, (k+1)*T/50) for k in range(50)]
+      assert abs(windows[0][0]) < 1e-8
+      assert all(windows[k][1] <= windows[k+1][0] + 1e-8
+                 for k in range(49))
+      assert abs(windows[-1][1] - T) < 1e-6
+      for modality in modalities:
+          values, mask = aggregate_by_overlap(sample, windows,
+            modality)
+          assert values.shape[0] == 50
+          assert np.all(np.isfinite(values[mask]))
+          assert np.all(values[~mask] == 0)
+
+
+B.2   模型前向传播伪代码
+
+                             model-forward.py
+ for modality in (text, audio, vision):
+      encoded = projection[modality](values[modality])
+      encoded = encoded * mask[modality].unsqueeze(-1)
+      temporal = bigru[modality](encoded)
+      tokens = layer_norm(encoded + dropout(temporal))
+      scores = time_score[modality](tokens)
+      scores = scores.masked_fill(~mask[modality], -1e4)
+      alpha = softmax(scores, dim=1)
+      pooled.append((tokens * alpha.unsqueeze(-1)).sum(dim=1))
+ stacked = torch.stack(pooled, dim=1)
+ beta = softmax(gate(stacked.flatten(1)), dim=-1)
+ fused = fusion((stacked * beta.unsqueeze(-1)).flatten(1))
+ class_logits = classifier(fused)
+ strength = regressor(fused).squeeze(-1)
+
+
+B.3   解释证据伪代码
+
+
+                                    32
+                                 explain.py
+ base_logits, base_strength, beta, attention = model(x, mask)
+ target = base_logits.argmax(dim=-1)
+ base_prob = softmax(base_logits, dim=-1)[target]
+ for modality in modalities:
+      for window in range(50):
+         x_masked, mask_masked = hide_window(x, mask, modality,
+             window)
+         changed_logits, changed_strength, _, _ = model(x_masked,
+             mask_masked)
+         drop = base_prob - softmax(changed_logits, dim=-1)[target]
+         evidence = attention[modality][window] * beta[modality] *
+             max(drop, 0)
+         save(modality, window, evidence, drop, changed_strength)
+
+
+B.4   审计规则
+
+                       表 2.14   关键审计规则与通过标准
+
+
+  类别       检查项                                通过标准
+
+  时间结构 窗口首点、连续性、终点、正时长                        四项比例均为 100%
+  词段结构 越界、正时长、单调、重叠                           越界、非正时长、非单调、重叠均
+                                              为0
+  掩码结构 缺失窗口与零值一致性                             有效位置有限，缺失位置置零且
+                                              mask 为 0
+  数据泄露 归一化统计量和模型选择                            只使用训练集统计量与验证集指标
+  专项测试 附件 3 或 4 监督标签使用                        无标签，不计算 Accuracy、F1、
+                                              MAE、Pearson
+
+
+
+
+                                    33
+                             附录 C         模型超参数与训练记录
+
+                                   表 3.15     最终模型超参数
+
+
+              参数                   取值
+
+              文本编码器                distilbert-base-uncased
+              文本 revision          12040accade4e8a0f71eabdb258fecc2e7e948be
+              公共时间窗                50
+              隐藏维度                 128
+              GRU 层数               2
+              双向                   True
+              Dropout              0.15
+              Batch size           64
+              学习率                  2 × 10−4
+              回归损失权重               0.5
+              随机种子                 42
+              解释验证样本               128
+              每条附件 4 证据 6
+
+
+
+C.1   候选训练记录
+
+
+                               表 3.16     主要候选模型的验证记录
+
+
+      模型                        Accuracy Macro-F1            MAE   Pearson 选择结论
+
+      Fixed aligned baseline    0.612637      0.588115 0.616443 0.624582      参考
+      Length-aware baseline     0.614011      0.595798 0.614132 0.620838      对比
+      Label-free SSL            0.608516      0.578294 0.667391 0.573212      放弃
+      Bidirectional SSL         0.618132      0.598285 0.621818 0.588408      对比
+      Old residual fusion       0.622253      0.610330 0.623941 0.601396      历史
+      Final attention-gate      0.637363      0.601580 0.612262 0.629627      最终
+
+
+                                                34
+C.2   运行环境
+
+      软件或硬件        版本或说明
+
+      Python       D:/Anaconda3/envs/pytorch/python.exe
+      PyTorch      1.8.0
+      Transformers 4.29.2
+      NumPy        1.24.3
+      PyAV         12.3.0
+      文本模型         distilbert-base-uncased 固定 revision
+      输出格式         CSV、JSON、PNG、PDF、checkpoint
+
+
+
+
+                                          35
+                 附录 D     附件 4 代表性预测记录
+
+
+                表 4.17   附件 4 前 20 条样本的预测摘要
+
+
+ID 类别              强度 主模态 文本贡献 语音贡献 视觉贡献
+
+01   Neutral       0.255 text        0.726   0.110   0.164
+02   Negative      0.041 text        0.461   0.409   0.130
+03   Neutral      -0.491 text        0.658   0.125   0.217
+04   Negative -0.594 text            0.611   0.115   0.274
+05   Positive      1.022 text        0.709   0.109   0.182
+06   Positive      0.052 text        0.550   0.298   0.152
+07   Positive      0.666 text        0.681   0.226   0.093
+08   Positive      0.467 text        0.683   0.171   0.146
+09   Positive      0.559 text        0.658   0.189   0.153
+10   Positive      0.101 text        0.604   0.202   0.194
+11   Positive      0.719 text        0.713   0.165   0.122
+12   Negative -0.176 text            0.490   0.299   0.211
+13   Positive      0.411 text        0.638   0.224   0.138
+14   Positive      0.327 text        0.671   0.185   0.144
+15   Positive      0.892 text        0.698   0.144   0.158
+16   Positive      0.340 text        0.611   0.225   0.164
+17   Positive      0.581 text        0.650   0.218   0.132
+18   Neutral       0.112 text        0.599   0.224   0.177
+19   Positive      0.741 text        0.672   0.192   0.136
+20   Positive      0.268 text        0.630   0.237   0.133
+
+
+
+
+                                36
+D.1   证据字段说明
+
+      字段                  含义
+
+      rank                当前样本证据排序，1 为最高
+      modality            text、audio 或 vision
+      window_index        0–49 公共时间窗索引
+      attention_score     模态内时间注意力
+      modality_contribution 样本级门控或消融贡献
+      occlusion_drop      屏蔽该窗口后的目标置信度下降
+      evidence_score      式 (7.20) 的综合证据分数
+      regression_change   屏蔽后的强度预测变化
+      frame_path          与视觉窗口对应的实际关键帧路径
+
+
+
+
+                                        37
+                附录 E    复现命令与结果核对清单
+
+E.1   特征准备与模型验证
+
+$py = "D:\\Anaconda3\\envs\\pytorch\\python.exe"
+$aligned = "emotion-transfer-pilot\\aligned_50.pkl"
+$derived = "emotion-transfer-pilot\\aligned_text_bert_features.pkl"
+$manifest = "q2_baseline\\aligned_text_bert_manifest.json"
+& $py q2_baseline\\run_aligned_text_bert.py prepare --aligned-data $al
+& $py q3_explainability\\q3_pipeline.py validate --data $derived --che
+
+E.2   提交前核对
+
+1. 检查 aligned_text_bert_manifest.json 的输入和派生文件 SHA-256；
+2. 检查训练、验证和附件 3 的文本接口均为固定 revision；
+3. 检查所有缺失窗口同时满足特征为零、mask 为 0；
+4. 检查模型 checkpoint 中的 config 与论文超参数表一致；
+5. 检查附件 3 和附件 4 没有被用于监督指标或模型选择；
+6. 检查最终 PDF 正文页数超过 30 页，并检查图、表、公式和参考文献无越界。
+
+E.3   结果口径声明
+
+      本文的“超过 baseline”特指附件 2 验证集上按同一特征接口计算的四项指标同时优
+于固定对齐 baseline。附件 2 test 只作独立复核，附件 3 和附件 4 无监督标签，不计算监
+督指标。旧 residual 模型的历史结果不作为最终合规主模型。该声明用于避免把不同接口、
+不同数据划分和不同标签条件下的结果混写。
+
+
+
+
+                             38
+

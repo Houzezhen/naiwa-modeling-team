@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with matplotlib (https://matplotlib.org/) -->
+<svg height="293.630625pt" version="1.1" viewBox="0 0 289.388437 293.630625" width="289.388437pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+*{stroke-linecap:butt;stroke-linejoin:round;}
+  </style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 293.630625 
+L 289.388437 293.630625 
+L 289.388437 0 
+L 0 0 
+z
+" style="fill:#ffffff;"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 44.567188 258.907187 
+L 282.188437 258.907187 
+L 282.188437 21.285937 
+L 44.567188 21.285937 
+z
+" style="fill:#ffffff;"/>
+   </g>
+   <g clip-path="url(#p6c6e176542)">
+    <image height="238.32" id="image58549bc548" transform="scale(1 -1)translate(0 -238.32)" width="238.32" x="44.567188" xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAUsAAAFLCAYAAABft66eAAAABHNCSVQICAgIfAhkiAAABJ5JREFUeJzt1sFJQ1EURVEjIQWkBQuwh8xsKBM7sCvbcBDBkSBklkRHPy1s3+TxYa0KDlzY3M3H92V5YHUWV1ut55fj7AkMeJw9AGANxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIg2Hz+3JbZI/i/r/N19gQGnX//Zk9ggM8SIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSINi+vZ9mb2DA6+Fp9gQG7S+72RMY4LMECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECMQSIBBLgEAsAQKxBAjEEiAQS4BALAECsQQIxBIgEEuAQCwBArEECO4Jbha0DkeKNQAAAABJRU5ErkJggg==" y="-20.587187"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path d="M 0 0 
+L 0 3.5 
+" id="m1c5ad18977" style="stroke:#505d70;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="84.170729" xlink:href="#m1c5ad18977" y="258.907187"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 84.170729, 273.043906)" x="84.170729" y="273.043906">消极</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="163.377812" xlink:href="#m1c5ad18977" y="258.907187"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 163.377812, 272.973594)" x="163.377812" y="272.973594">中性</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="242.584896" xlink:href="#m1c5ad18977" y="258.907187"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 242.584896, 273.00875)" x="242.584896" y="273.00875">积极</text>
+     </g>
+    </g>
+    <g id="text_4">
+     <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 163.377813, 285.305625)" x="163.377813" y="285.305625">预测类别</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_4">
+      <defs>
+       <path d="M 0 0 
+L -3.5 0 
+" id="m6adad10991" style="stroke:#505d70;stroke-width:0.8;"/>
+      </defs>
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="44.567188" xlink:href="#m6adad10991" y="60.889479"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:end;" transform="rotate(-0, 37.567188, 64.457839)" x="37.567188" y="64.457839">消极</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_5">
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="44.567188" xlink:href="#m6adad10991" y="140.096562"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:end;" transform="rotate(-0, 37.567188, 143.629766)" x="37.567188" y="143.629766">中性</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_6">
+      <g>
+       <use style="fill:#505d70;stroke:#505d70;stroke-width:0.8;" x="44.567188" xlink:href="#m6adad10991" y="219.303646"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="fill:#505d70;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:end;" transform="rotate(-0, 37.567188, 222.854427)" x="37.567188" y="222.854427">积极</text>
+     </g>
+    </g>
+    <g id="text_8">
+     <text style="fill:#16243a;font-family:SimHei;font-size:9px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-90, 14.442188, 140.096562)" x="14.442188" y="140.096562">真实类别</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 44.567188 258.907187 
+L 44.567188 21.285938 
+" style="fill:none;stroke:#505d70;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.65;"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 44.567188 258.907187 
+L 282.188437 258.907187 
+" style="fill:none;stroke:#505d70;stroke-linecap:square;stroke-linejoin:miter;stroke-width:0.65;"/>
+   </g>
+   <g id="text_9">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 84.170729, 64.545729)" x="84.170729" y="64.545729">133</text>
+   </g>
+   <g id="text_10">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 163.377812, 64.545729)" x="163.377812" y="64.545729">25</text>
+   </g>
+   <g id="text_11">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 242.584896, 64.545729)" x="242.584896" y="64.545729">48</text>
+   </g>
+   <g id="text_12">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 84.170729, 143.752812)" x="84.170729" y="143.752812">31</text>
+   </g>
+   <g id="text_13">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 163.377812, 143.752812)" x="163.377812" y="143.752812">69</text>
+   </g>
+   <g id="text_14">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 242.584896, 143.752812)" x="242.584896" y="143.752812">84</text>
+   </g>
+   <g id="text_15">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 84.170729, 222.959896)" x="84.170729" y="222.959896">37</text>
+   </g>
+   <g id="text_16">
+    <text style="fill:#16243a;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 163.377812, 222.959896)" x="163.377812" y="222.959896">39</text>
+   </g>
+   <g id="text_17">
+    <text style="fill:#ffffff;font-family:SimHei;font-size:13px;font-style:normal;font-weight:normal;text-anchor:middle;" transform="rotate(-0, 242.584896, 222.959896)" x="242.584896" y="222.959896">262</text>
+   </g>
+   <g id="text_18">
+    <text style="fill:#16243a;font-family:SimHei;font-size:10px;font-style:normal;font-weight:semibold;text-anchor:middle;" transform="rotate(-0, 163.377813, 15.285937)" x="163.377813" y="15.285937">最终模型验证集混淆矩阵（728例）</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6c6e176542">
+   <rect height="237.62125" width="237.62125" x="44.567188" y="21.285937"/>
+  </clipPath>
+ </defs>
+</svg>

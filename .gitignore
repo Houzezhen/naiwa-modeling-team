@@ -1,0 +1,42 @@
+# Python and temporary caches
+**/__pycache__/
+**/node_modules/
+*.pyc
+*.pyo
+.tmp_*/
+
+# LaTeX auxiliary files and local build logs
+2026华为杯研赛latex模板/E题论文/*.aux
+2026华为杯研赛latex模板/E题论文/*.bbl
+2026华为杯研赛latex模板/E题论文/*.blg
+2026华为杯研赛latex模板/E题论文/*.log
+2026华为杯研赛latex模板/E题论文/*.out
+2026华为杯研赛latex模板/E题论文/*.toc
+2026华为杯研赛latex模板/E题论文/main.txt
+2026华为杯研赛latex模板/E题论文/build_*.log
+2026华为杯研赛latex模板/E题论文/main.pdf
+
+# Local-only source data and generated feature workspaces
+emotion-transfer-pilot/*.pkl
+E题复杂场景下多模态情感识别的数学建模与算法设计/E题数据/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/output/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/output_speech_aware/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/work/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/work_speech_aware/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/review_examples/
+E题复杂场景下多模态情感识别的数学建模与算法设计/question1_alignment/review_examples_speech_aware/
+output/backup/
+2026华为杯研赛latex模板/E题论文/figures/*.log
+2026华为杯研赛latex模板/E题论文/figures/test_simple.pptx
+
+# Non-final exploratory runs retained locally for reference
+q2_baseline/aligned_text_bert_run/
+q2_baseline/q2_multiview_separate_bidir/
+q3_explainability/q3_run/
+q3_explainability/q3_q2_best_run/
+q3_explainability/smoke_run/
+q3_explainability/.patch_test2
+
+# Archived reference material is kept outside the final-paper tree
+/archive/non_final/*
+!/archive/non_final/README.md

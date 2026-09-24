@@ -1,0 +1,42 @@
+{
+  "sample_index": 5,
+  "sample_id": "0y022OlZ3W0$_$5",
+  "selection_rule": "First correctly classified validation sample with all modalities present and top-window occlusion drop >= 0.01; illustration only",
+  "true_class": "Negative",
+  "predicted_class": "Negative",
+  "class_probability": 0.8193373680114746,
+  "gate": {
+    "text": 0.6219468712806702,
+    "audio": 0.13075843453407288,
+    "vision": 0.24729475378990173
+  },
+  "evidence": [
+    {
+      "modality": "text",
+      "window_index": 21,
+      "attention_score": 0.19075709581375122,
+      "modality_contribution": 0.6219468712806702,
+      "occlusion_drop": 0.034304141998291016,
+      "evidence_score": 0.0040698701793076,
+      "regression_change": 0.09407508373260498
+    },
+    {
+      "modality": "audio",
+      "window_index": 1,
+      "attention_score": 0.09877035021781921,
+      "modality_contribution": 0.13075843453407288,
+      "occlusion_drop": 0.0011277198791503906,
+      "evidence_score": 1.456456561577113e-05,
+      "regression_change": 0.005233049392700195
+    },
+    {
+      "modality": "vision",
+      "window_index": 1,
+      "attention_score": 0.06249566376209259,
+      "modality_contribution": 0.24729475378990173,
+      "occlusion_drop": 0.0,
+      "evidence_score": 0.0,
+      "regression_change": 0.005371451377868652
+    }
+  ]
+}
