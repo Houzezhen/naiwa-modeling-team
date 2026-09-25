@@ -1,0 +1,13 @@
+{
+  "checkpoint": "E:\\研究生数学建模\\e题代码\\naiwa-modeling-team\\q2_dm_cmrn\\outputs\\dm_cmrn\\best.pt",
+  "model": "dm_cmrn",
+  "split": "valid",
+  "grids": [
+    "type",
+    "position",
+    "ratio",
+    "duration"
+  ],
+  "scenarios": 49,
+  "curve_plotted": true
+}

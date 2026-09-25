@@ -5,7 +5,7 @@ const C = { blue: '#24548E', teal: '#087C70', orange: '#BA5336', gold: '#A17022'
 
 function esc(value) { return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function text(x, y, value, size = 18, color = C.ink, weight = 400, anchor = 'start', italic = false) {
-  return `<text x="${x}" y="${y}" font-family="Microsoft YaHei, SimHei" font-size="${size}px" font-weight="${weight}" fill="${color}" text-anchor="${anchor}"${italic ? ' font-style="italic"' : ''}>${esc(value)}</text>`;
+  return `<text x="${x}" y="${y}" font-family="Times New Roman, Microsoft YaHei, SimHei" font-size="${size}px" font-weight="${weight}" fill="${color}" text-anchor="${anchor}"${italic ? ' font-style="italic"' : ''}>${esc(value)}</text>`;
 }
 function rect(x, y, w, h, fill, stroke = '#D1D5DB', r = 14, sw = 2) { return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`; }
 function line(x1, y1, x2, y2, stroke = C.gray, sw = 2, arrow = false) { return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${sw}"${arrow ? ' marker-end="url(#arrow)"' : ''}/>`; }
@@ -53,3 +53,4 @@ architecture += rect(1104, 180, 165, 106, C.paleBlue, C.blue, 12, 2) + chartIcon
 architecture += rect(1104, 318, 165, 106, C.paleOrange, C.orange, 12, 2) + chartIcon(1124, 339, C.orange) + text(1220, 364, '情感强度', 12, C.orange, 700, 'middle') + text(1220, 388, '连续数值', 9, C.gray, 400, 'middle');
 architecture += rect(246, 510, 850, 78, C.paleGray, '#D1D5DB', 10, 1) + shieldIcon(270, 522, C.blue) + text(350, 546, '缺失窗口掩码', 14, C.blue, 700) + text(552, 546, '缺失值归零 + 显式有效位置 + 注意力分母掩码', 13, C.ink) + text(640, 645, '解释输出：模态消融 · 注意力排序 · 局部窗口遮挡 · 关键帧追踪', 15, C.orange, 400, 'middle') + footer() + '</svg>';
 fs.writeFileSync(`${OUT}/fig_model_architecture_ppt.svg`, architecture, 'utf8');
+fs.writeFileSync(`${OUT}/fig_model_architecture.svg`, architecture, 'utf8');

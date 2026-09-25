@@ -1,0 +1,50 @@
+{
+  "checkpoint": "E:\\研究生数学建模\\e题代码\\naiwa-modeling-team\\q2_dm_cmrn\\outputs\\dm_cmrn\\best.pt",
+  "model": "dm_cmrn",
+  "text_mode": "distilbert",
+  "exist_mode": "full",
+  "samples": 60,
+  "metrics": null,
+  "metrics_note": "附件3 无真实标签，不能计算 Accuracy/Macro-F1/MAE/Pearson，只报告预测与缺失统计。",
+  "class_counts": {
+    "aligned": {
+      "Neutral": 12,
+      "Positive": 11,
+      "Negative": 7
+    },
+    "unaligned": {
+      "Neutral": 12,
+      "Positive": 10,
+      "Negative": 8
+    }
+  },
+  "mean_strength": {
+    "aligned": 0.2543376331528028,
+    "unaligned": 0.14017945043742658
+  },
+  "mean_missing_bins": {
+    "aligned": {
+      "text": 0.0,
+      "audio": 33.2,
+      "vision": 33.333333333333336
+    },
+    "unaligned": {
+      "text": 0.0,
+      "audio": 36.166666666666664,
+      "vision": 40.03333333333333
+    }
+  },
+  "mean_weight": {
+    "aligned": {
+      "text": 0.5786522299051284,
+      "audio": 0.1676875742773215,
+      "vision": 0.25366020053625105
+    },
+    "unaligned": {
+      "text": 0.5461640447378159,
+      "audio": 0.18324538121620815,
+      "vision": 0.2705905611316363
+    }
+  },
+  "output_csv": "E:\\研究生数学建模\\e题代码\\naiwa-modeling-team\\q2_dm_cmrn\\outputs\\attachment3\\attachment3_predictions.csv"
+}

@@ -1,0 +1,201 @@
+{
+  "data_kind": "aligned",
+  "path": "E:\\研究生数学建模\\赛题\\E题复杂场景下多模态情感识别的数学建模与算法设计\\E题数据\\附件2-数据集特征文件\\aligned_50.pkl",
+  "splits": {
+    "train": {
+      "split": "train",
+      "samples": 3395,
+      "modalities": {
+        "text": {
+          "shape": [
+            3395,
+            50,
+            768
+          ],
+          "dtype": "float32",
+          "exist_ratio": 0.49291310751104567,
+          "observed_ratio": 0.49291310751104567,
+          "padding_ratio": 0.5070868924889543,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 24.645655375552284,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 1.0
+        },
+        "audio": {
+          "shape": [
+            3395,
+            50,
+            74
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.45253019145802653,
+          "observed_ratio": 0.45253019145802653,
+          "padding_ratio": 0.5474698085419735,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 22.626509572901327,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        },
+        "vision": {
+          "shape": [
+            3395,
+            50,
+            35
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.432259204712813,
+          "observed_ratio": 0.4278821796759941,
+          "padding_ratio": 0.567740795287187,
+          "interior_missing_ratio": 0.0043770250368188515,
+          "interior_missing_bins": 743,
+          "mean_exist_bins": 21.61296023564065,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        }
+      },
+      "labels": {
+        "class_counts": [
+          967,
+          758,
+          1670
+        ],
+        "regression_min": -3.0,
+        "regression_max": 3.0
+      },
+      "has_explicit_masks": [],
+      "has_lengths": []
+    },
+    "valid": {
+      "split": "valid",
+      "samples": 728,
+      "modalities": {
+        "text": {
+          "shape": [
+            728,
+            50,
+            768
+          ],
+          "dtype": "float32",
+          "exist_ratio": 0.5117582417582418,
+          "observed_ratio": 0.5117582417582418,
+          "padding_ratio": 0.48824175824175825,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 25.587912087912088,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 1.0
+        },
+        "audio": {
+          "shape": [
+            728,
+            50,
+            74
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.4704945054945055,
+          "observed_ratio": 0.4704945054945055,
+          "padding_ratio": 0.5295054945054946,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 23.524725274725274,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        },
+        "vision": {
+          "shape": [
+            728,
+            50,
+            35
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.45,
+          "observed_ratio": 0.44483516483516483,
+          "padding_ratio": 0.55,
+          "interior_missing_ratio": 0.005164835164835165,
+          "interior_missing_bins": 188,
+          "mean_exist_bins": 22.5,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        }
+      },
+      "labels": {
+        "class_counts": [
+          206,
+          184,
+          338
+        ],
+        "regression_min": -3.0,
+        "regression_max": 3.0
+      },
+      "has_explicit_masks": [],
+      "has_lengths": []
+    },
+    "test": {
+      "split": "test",
+      "samples": 727,
+      "modalities": {
+        "text": {
+          "shape": [
+            727,
+            50,
+            768
+          ],
+          "dtype": "float32",
+          "exist_ratio": 0.5036863823933975,
+          "observed_ratio": 0.5036863823933975,
+          "padding_ratio": 0.4963136176066025,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 25.184319119669876,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 1.0
+        },
+        "audio": {
+          "shape": [
+            727,
+            50,
+            74
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.46368638239339754,
+          "observed_ratio": 0.46368638239339754,
+          "padding_ratio": 0.5363136176066025,
+          "interior_missing_ratio": 0.0,
+          "interior_missing_bins": 0,
+          "mean_exist_bins": 23.184319119669876,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        },
+        "vision": {
+          "shape": [
+            727,
+            50,
+            35
+          ],
+          "dtype": "float64",
+          "exist_ratio": 0.44104539202200826,
+          "observed_ratio": 0.43551581843191195,
+          "padding_ratio": 0.5589546079779918,
+          "interior_missing_ratio": 0.005529573590096286,
+          "interior_missing_bins": 201,
+          "mean_exist_bins": 22.052269601100413,
+          "contiguous_exist_share": 1.0,
+          "first_position_exist_share": 0.0
+        }
+      },
+      "labels": {
+        "class_counts": [
+          207,
+          158,
+          362
+        ],
+        "regression_min": -3.0,
+        "regression_max": 3.0
+      },
+      "has_explicit_masks": [],
+      "has_lengths": []
+    }
+  }
+}

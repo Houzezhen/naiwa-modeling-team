@@ -1,0 +1,11 @@
+﻿config,model,seed,extra,run_dir,teacher,teacher_seconds,trained,seconds
+cross_attn,cross_attn,42,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\cross_attn_seed42,,36.3,True,44.2
+dm_cmrn,dm_cmrn,42,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\dm_cmrn_seed42,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\teacher_seed42\best.pt,36.3,True,53.1
+cross_attn,cross_attn,43,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\cross_attn_seed43,,32.8,True,44.2
+dm_cmrn,dm_cmrn,43,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\dm_cmrn_seed43,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\teacher_seed43\best.pt,32.8,True,60.2
+cross_attn,cross_attn,44,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\cross_attn_seed44,,32.2,True,45.9
+dm_cmrn,dm_cmrn,44,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\dm_cmrn_seed44,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\teacher_seed44\best.pt,32.2,True,73.3
+cross_attn,cross_attn,45,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\cross_attn_seed45,,41.4,True,36.6
+dm_cmrn,dm_cmrn,45,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\dm_cmrn_seed45,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\teacher_seed45\best.pt,41.4,True,56.1
+cross_attn,cross_attn,46,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\cross_attn_seed46,,37.4,True,40.8
+dm_cmrn,dm_cmrn,46,,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\dm_cmrn_seed46,E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\seeds\teacher_seed46\best.pt,37.4,True,71.5

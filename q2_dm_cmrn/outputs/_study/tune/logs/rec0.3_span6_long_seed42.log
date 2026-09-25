@@ -1,0 +1,16 @@
+D:\Anaconda\envs\Lecture2env\lib\site-packages\torch\nn\modules\transformer.py:385: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+device=cuda:0 model=dm_cmrn variant=None stage=student rec_target=teacher params=671429
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+已加载教师：E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\tune\teacher_seed42\best.pt
+epoch 001 loss=2.8904 clean[f1=0.5119 acc=0.6016] missing[f1=0.5259 acc=0.6071 mae=0.7489 r=0.5915] score=0.5780 (6s)
+epoch 002 loss=1.7119 clean[f1=0.5930 acc=0.6071] missing[f1=0.5982 acc=0.6168 mae=0.6149 r=0.6500] score=0.6606 (6s)
+epoch 003 loss=1.4896 clean[f1=0.6343 acc=0.6456] missing[f1=0.6234 acc=0.6332 mae=0.5980 r=0.6576] score=0.6946 (6s)
+epoch 004 loss=1.3508 clean[f1=0.6152 acc=0.6291] missing[f1=0.6133 acc=0.6264 mae=0.5911 r=0.6556] score=0.6798 (6s)
+epoch 005 loss=1.2863 clean[f1=0.6196 acc=0.6346] missing[f1=0.6146 acc=0.6291 mae=0.5788 r=0.6661] score=0.6837 (6s)
+epoch 006 loss=1.1980 clean[f1=0.6164 acc=0.6319] missing[f1=0.6230 acc=0.6387 mae=0.5988 r=0.6635] score=0.6861 (6s)
+epoch 007 loss=1.1088 clean[f1=0.6170 acc=0.6236] missing[f1=0.6085 acc=0.6168 mae=0.5809 r=0.6708] score=0.6799 (6s)
+epoch 008 loss=1.0820 clean[f1=0.6170 acc=0.6236] missing[f1=0.6186 acc=0.6250 mae=0.5789 r=0.6736] score=0.6851 (6s)
+epoch 009 loss=1.0570 clean[f1=0.6020 acc=0.6250] missing[f1=0.5999 acc=0.6236 mae=0.6040 r=0.6614] score=0.6671 (6s)
+early stopping at epoch 9（best epoch=3, score=0.6946）
+完成：best epoch=3，检查点 E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\tune\rec0.3_span6_long_seed42\best.pt

@@ -1,0 +1,23 @@
+device=cuda:0 model=dm_cmrn variant=None stage=student rec_target=teacher params=333029
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+已加载教师：outputs\teacher\best.pt
+epoch 001 loss=2.3646 clean[f1=0.5965] missing[f1=0.5881 mae=0.6097 r=0.6010] score=0.6524 (7s)
+epoch 002 loss=1.4740 clean[f1=0.6008] missing[f1=0.5978 mae=0.6029 r=0.6426] score=0.6636 (6s)
+epoch 003 loss=1.3233 clean[f1=0.5999] missing[f1=0.5917 mae=0.6066 r=0.6344] score=0.6592 (6s)
+epoch 004 loss=1.2264 clean[f1=0.6086] missing[f1=0.6128 mae=0.6185 r=0.6256] score=0.6733 (6s)
+epoch 005 loss=1.1450 clean[f1=0.6012] missing[f1=0.6092 mae=0.6101 r=0.6379] score=0.6690 (6s)
+epoch 006 loss=1.1106 clean[f1=0.6119] missing[f1=0.6097 mae=0.5887 r=0.6520] score=0.6760 (6s)
+完成：best epoch=6，检查点 outputs\dm_cmrn\best.pt
+检查点：outputs\dm_cmrn\best.pt
+模型：dm_cmrn {'hidden': 64, 'layers': 2, 'nhead': 4, 'dropout': 0.2, 'ctx_span': 6}
+数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl（test）
+              scenario  accuracy  macro_f1      mae  pearson      ccc
+                 clean  0.653370  0.635850 0.606509 0.691435 0.665902
+        single_text_30  0.646492  0.630569 0.626157 0.672421 0.638569
+       single_audio_30  0.656121  0.638475 0.607775 0.690505 0.665488
+      single_vision_30  0.658872  0.639668 0.606196 0.691937 0.666042
+  double_text+audio_30  0.647868  0.632085 0.627332 0.670902 0.638370
+ double_text+vision_30  0.642366  0.625180 0.625233 0.673630 0.639667
+double_audio+vision_30  0.656121  0.637882 0.606723 0.691518 0.666241
+             triple_30  0.645117  0.628295 0.625867 0.671618 0.639008
+已写入：outputs\dm_cmrn\eval_test

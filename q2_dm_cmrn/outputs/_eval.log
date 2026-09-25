@@ -1,0 +1,77 @@
+检查点：outputs\dm_cmrn\best.pt
+模型：dm_cmrn {'hidden': 64, 'layers': 2, 'nhead': 4, 'dropout': 0.2, 'ctx_span': 6}
+数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl（test）
+              scenario  accuracy  macro_f1      mae  pearson      ccc
+                 clean  0.668501  0.635963 0.621444 0.690479 0.680299
+        single_text_30  0.676754  0.651893 0.631315 0.673726 0.657023
+       single_audio_30  0.668501  0.636038 0.621784 0.690149 0.680262
+      single_vision_30  0.665750  0.634748 0.621548 0.690405 0.679343
+  double_text+audio_30  0.675378  0.650005 0.632357 0.672946 0.657376
+ double_text+vision_30  0.676754  0.651842 0.631976 0.673634 0.655574
+double_audio+vision_30  0.669876  0.637794 0.621217 0.690375 0.679702
+             triple_30  0.675378  0.650633 0.632374 0.672720 0.655802
+已写入：outputs\dm_cmrn\eval_test
+检查点：outputs\teacher\best.pt
+模型：cross_attn {'hidden': 64, 'layers': 2, 'nhead': 4, 'dropout': 0.2, 'ctx_span': 6}
+数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl（test）
+              scenario  accuracy  macro_f1      mae  pearson      ccc
+                 clean  0.654746  0.627257 0.603358 0.695674 0.671762
+        single_text_30  0.651994  0.628765 0.629897 0.666353 0.635621
+       single_audio_30  0.654746  0.625542 0.604487 0.695002 0.671320
+      single_vision_30  0.654746  0.627018 0.603151 0.695933 0.671573
+  double_text+audio_30  0.647868  0.623665 0.630225 0.666444 0.635851
+ double_text+vision_30  0.653370  0.629579 0.629582 0.666673 0.635688
+double_audio+vision_30  0.653370  0.623888 0.603505 0.696155 0.672017
+             triple_30  0.649243  0.625410 0.629313 0.666687 0.635644
+已写入：outputs\teacher\eval_test
+检查点：outputs\early\best.pt
+模型：early {'hidden': 64, 'layers': 2, 'nhead': 4, 'dropout': 0.2, 'ctx_span': 6}
+数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl（test）
+              scenario  accuracy  macro_f1      mae  pearson      ccc
+                 clean  0.646492  0.614599 0.687475 0.655046 0.579316
+        single_text_30  0.627235  0.601012 0.694623 0.643671 0.572533
+       single_audio_30  0.639615  0.609201 0.687454 0.654056 0.578004
+      single_vision_30  0.643741  0.613653 0.686201 0.656000 0.580232
+  double_text+audio_30  0.631362  0.604798 0.695130 0.643327 0.572209
+ double_text+vision_30  0.631362  0.604705 0.693773 0.644288 0.572543
+double_audio+vision_30  0.642366  0.612244 0.686308 0.655175 0.578447
+             triple_30  0.635488  0.610430 0.693652 0.643742 0.572490
+已写入：outputs\early\eval_test
+检查点：outputs\misa\best.pt
+模型：misa {'hidden': 64, 'layers': 2, 'nhead': 4, 'dropout': 0.2, 'ctx_span': 6}
+数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl（test）
+              scenario  accuracy  macro_f1      mae  pearson      ccc
+                 clean  0.649243  0.604199 0.669756 0.679428 0.650920
+        single_text_30  0.640990  0.602173 0.673073 0.668115 0.642880
+       single_audio_30  0.650619  0.605098 0.669644 0.678507 0.650087
+      single_vision_30  0.647868  0.603969 0.669377 0.680023 0.651540
+  double_text+audio_30  0.643741  0.607185 0.673020 0.667957 0.642663
+ double_text+vision_30  0.639615  0.601794 0.672631 0.668449 0.643187
+double_audio+vision_30  0.649243  0.605418 0.668472 0.679489 0.650977
+             triple_30  0.638239  0.601590 0.671258 0.668482 0.643249
+已写入：outputs\misa\eval_test
+模型=dm_cmrn，场景数=21，划分=valid
+        scenario  macro_f1      mae  pearson
+           clean  0.610017 0.621837 0.635558
+   ratio|all|0.1  0.596617 0.620086 0.631525
+  ratio|text|0.1  0.593353 0.620026 0.631547
+ ratio|audio|0.1  0.614410 0.622284 0.635278
+ratio|vision|0.1  0.608944 0.621712 0.635508
+   ratio|all|0.2  0.598759 0.626020 0.621184
+  ratio|text|0.2  0.596365 0.625275 0.621288
+ ratio|audio|0.2  0.611677 0.622402 0.635236
+ratio|vision|0.2  0.611677 0.621636 0.635531
+   ratio|all|0.3  0.593513 0.632372 0.610873
+  ratio|text|0.3  0.588938 0.630650 0.611079
+ ratio|audio|0.3  0.610056 0.622410 0.635322
+ratio|vision|0.3  0.610056 0.621691 0.635463
+   ratio|all|0.4  0.582925 0.628258 0.615010
+  ratio|text|0.4  0.589106 0.624245 0.615250
+ ratio|audio|0.4  0.610056 0.622642 0.635271
+ratio|vision|0.4  0.607317 0.621783 0.635156
+   ratio|all|0.5  0.579063 0.644736 0.588678
+  ratio|text|0.5  0.582054 0.639149 0.589660
+ ratio|audio|0.5  0.610056 0.622972 0.635048
+ratio|vision|0.5  0.605647 0.622134 0.634618
+已写入：E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\missing_analysis
+模型=dm_cmrn 数据=E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件3-模态缺失特征样本 text_mode=zero device=cpu

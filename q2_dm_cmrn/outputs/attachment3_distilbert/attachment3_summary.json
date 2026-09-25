@@ -1,0 +1,50 @@
+{
+  "checkpoint": "outputs\\dm_cmrn\\best.pt",
+  "model": "dm_cmrn",
+  "text_mode": "distilbert",
+  "exist_mode": "full",
+  "samples": 60,
+  "metrics": null,
+  "metrics_note": "附件3 无真实标签，不能计算 Accuracy/Macro-F1/MAE/Pearson，只报告预测与缺失统计。",
+  "class_counts": {
+    "aligned": {
+      "Positive": 17,
+      "Neutral": 11,
+      "Negative": 2
+    },
+    "unaligned": {
+      "Positive": 17,
+      "Neutral": 8,
+      "Negative": 5
+    }
+  },
+  "mean_strength": {
+    "aligned": 0.45476430157820386,
+    "unaligned": 0.32254866833488144
+  },
+  "mean_missing_bins": {
+    "aligned": {
+      "text": 0.0,
+      "audio": 0.0,
+      "vision": 0.0
+    },
+    "unaligned": {
+      "text": 0.0,
+      "audio": 0.0,
+      "vision": 0.0
+    }
+  },
+  "mean_weight": {
+    "aligned": {
+      "text": 0.7210492392381033,
+      "audio": 0.1339075706899166,
+      "vision": 0.1450431772818168
+    },
+    "unaligned": {
+      "text": 0.7419263104597728,
+      "audio": 0.12635804166396458,
+      "vision": 0.1317156611631314
+    }
+  },
+  "output_csv": "outputs\\attachment3_distilbert\\attachment3_predictions.csv"
+}

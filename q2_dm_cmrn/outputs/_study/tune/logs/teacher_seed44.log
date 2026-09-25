@@ -1,0 +1,11 @@
+D:\Anaconda\envs\Lecture2env\lib\site-packages\torch\nn\modules\transformer.py:385: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+device=cuda:0 model=cross_attn variant=None stage=teacher rec_target=self params=739108
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+epoch 001 loss=1.2574 clean[f1=0.5223 acc=0.5343] missing[f1=0.5300 acc=0.5412 mae=0.7474 r=0.5848] score=0.5846 (6s)
+epoch 002 loss=1.0078 clean[f1=0.6163 acc=0.6223] missing[f1=0.5932 acc=0.5989 mae=0.5852 r=0.6523] score=0.6700 (5s)
+epoch 003 loss=0.9023 clean[f1=0.5881 acc=0.5865] missing[f1=0.5855 acc=0.5838 mae=0.6338 r=0.6319] score=0.6500 (5s)
+epoch 004 loss=0.8094 clean[f1=0.5927 acc=0.6195] missing[f1=0.5852 acc=0.6099 mae=0.6083 r=0.6427] score=0.6532 (5s)
+epoch 005 loss=0.7090 clean[f1=0.5962 acc=0.6113] missing[f1=0.5928 acc=0.6071 mae=0.6282 r=0.6055] score=0.6550 (4s)
+early stopping at epoch 5（best epoch=2, score=0.6700）
+完成：best epoch=2，检查点 E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\tune\teacher_seed44\best.pt

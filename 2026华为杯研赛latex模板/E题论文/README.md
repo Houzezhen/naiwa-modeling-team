@@ -16,7 +16,7 @@
 `D:\Anaconda3\python.exe make_figures.py`。PPT 框图源文件由
 `node make_ppt_diagrams.js` 生成，论文用矢量版本由
 `node export_diagram_svgs.js` 生成，并以 `rsvg-convert` 导出同名 PDF；模型结构图使用 `fig_model_architecture.pdf`。总流程图以及三个问题分析小节的流程图使用 `make_three_question_roadmap.js` 绘制为四份可编辑 PPT，再由 `export_three_question_roadmap.ps1` 通过 PowerPoint 导出为论文中的 `fig_pipeline.pdf`、`fig_problem1_analysis.pdf`、`fig_problem2_analysis.pdf` 和 `fig_problem3_analysis.pdf`。这一步应在旧图表脚本之后运行，以免总流程图被旧版覆盖。
-之后运行 `python make_revision_figures.py` 和 `python make_explanatory_figures.py`，重绘的统计图均直接取自保存的结果 CSV，不修改数据或重新推理。
+之后运行 `python make_revision_figures.py` 和 `python make_explanatory_figures.py`，重绘的统计图均直接取自保存的结果 CSV，不修改数据或重新推理。图内英文和数字使用 Times New Roman，中文保留中文字体。若缺少重新推理所需的派生特征文件，可运行 `python restyle_saved_svgs.py`，再运行 `powershell -ExecutionPolicy Bypass -File export_three_question_roadmap.ps1`，从已保存的矢量图导出相同数据、更新字体的 PDF。
 数值图的逐样本结果与消融记录保存在 `figures/source_*.csv`、
 `figures/source_representative_sample.json`；缺失热力图是统一编码候选的敏感性审计，
 而非最终模型的缺失性能。视频证据仅在展示图中统一裁切画面下缘约 13% 以避开原片外文水印，原始关键帧和证据清单不做修改。所有验证集比较均为单次训练的描述性结果，不标记显著性。

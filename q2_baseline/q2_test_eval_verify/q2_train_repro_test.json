@@ -1,0 +1,12 @@
+{
+  "checkpoint": "q2_train_repro\\best.pt",
+  "data": "E:\\\u7814\u7a76\u751f\u6570\u5b66\u5efa\u6a21\\\u8d5b\u9898\\E\u9898\u590d\u6742\u573a\u666f\u4e0b\u591a\u6a21\u6001\u60c5\u611f\u8bc6\u522b\u7684\u6570\u5b66\u5efa\u6a21\u4e0e\u7b97\u6cd5\u8bbe\u8ba1\\E\u9898\u6570\u636e\\\u9644\u4ef62-\u6570\u636e\u96c6\u7279\u5f81\u6587\u4ef6\\aligned_50.pkl",
+  "split": "test",
+  "selection_was_done_on": "valid",
+  "clean": {
+    "accuracy": 0.6464924346629987,
+    "f1_macro": 0.5966850860672018,
+    "mae": 0.6689700424630179,
+    "pearson": 0.6478428051454616
+  }
+}

@@ -18,9 +18,12 @@ CHINESE_MODALITIES = {'text': '文本', 'audio': '语音', 'vision': '视觉'}
 
 def apply_style():
     mpl.rcParams.update({
-        'font.family': 'sans-serif',
-        'font.sans-serif': ['SimHei', 'Microsoft YaHei', 'DejaVu Sans'],
-        'mathtext.fontset': 'dejavusans',
+        'font.family': ['Times New Roman', 'SimHei'],
+        'mathtext.fontset': 'custom',
+        'mathtext.rm': 'Times New Roman',
+        'mathtext.it': 'Times New Roman:italic',
+        'mathtext.bf': 'Times New Roman:bold',
+        'mathtext.fallback': 'stix',
         'font.size': 9,
         'axes.titlesize': 10,
         'axes.labelsize': 9,

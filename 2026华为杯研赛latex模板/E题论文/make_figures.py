@@ -79,7 +79,7 @@ for cls in ['Negative', 'Neutral', 'Positive']:
         if share >= 8:
             ax.text(i, b + share / 2, f'{share:.1f}%', ha='center', va='center', color='white', fontsize=8, weight='bold')
     bottom += shares
-ax.set_ylim(0, 100); ax.set_ylabel('类别占比（%）'); ax.set_title('附件2监督数据的类别构成')
+ax.set_ylim(0, 100); ax.set_ylabel('类别占比（%）'); ax.set_title('附件2监督数据的类别构成', pad=32)
 ax.grid(axis='y', alpha=.2); ax.legend(frameon=False, ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.08))
 fig.tight_layout(); fig.savefig(OUT/'fig_class_distribution.pdf'); fig.savefig(OUT/'fig_class_distribution.png', dpi=300); plt.close(fig)
 

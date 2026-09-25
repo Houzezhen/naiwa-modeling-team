@@ -1,0 +1,39 @@
+device=cuda:0 model=cross_attn variant=None stage=teacher rec_target=self params=351428
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+epoch 001 loss=1.1826 clean[f1=0.5232] missing[f1=0.5357 mae=0.6921 r=0.6297] score=0.5924 (4s)
+epoch 002 loss=0.9726 clean[f1=0.6053] missing[f1=0.6071 mae=0.6356 r=0.6521] score=0.6715 (4s)
+epoch 003 loss=0.8832 clean[f1=0.6319] missing[f1=0.6255 mae=0.5914 r=0.6476] score=0.6935 (4s)
+epoch 004 loss=0.7832 clean[f1=0.5609] missing[f1=0.5794 mae=0.6221 r=0.6249] score=0.6327 (4s)
+epoch 005 loss=0.6977 clean[f1=0.5974] missing[f1=0.5950 mae=0.6326 r=0.6020] score=0.6564 (4s)
+epoch 006 loss=0.5797 clean[f1=0.6006] missing[f1=0.6106 mae=0.6664 r=0.6063] score=0.6662 (4s)
+完成：best epoch=3，检查点 outputs\teacher\best.pt
+device=cuda:0 model=early variant=None stage=single rec_target=self params=94532
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+epoch 001 loss=1.1258 clean[f1=0.5509] missing[f1=0.5505 mae=0.6288 r=0.6184] score=0.6125 (2s)
+epoch 002 loss=0.9156 clean[f1=0.6103] missing[f1=0.6109 mae=0.6485 r=0.6315] score=0.6737 (2s)
+epoch 003 loss=0.8194 clean[f1=0.5833] missing[f1=0.5889 mae=0.6102 r=0.6251] score=0.6486 (2s)
+epoch 004 loss=0.7393 clean[f1=0.5839] missing[f1=0.5827 mae=0.6049 r=0.6372] score=0.6470 (2s)
+epoch 005 loss=0.6463 clean[f1=0.5739] missing[f1=0.5705 mae=0.6163 r=0.6193] score=0.6342 (2s)
+epoch 006 loss=0.5298 clean[f1=0.5785] missing[f1=0.5741 mae=0.6120 r=0.6227] score=0.6386 (2s)
+early stopping at epoch 6（best epoch=2, score=0.6737）
+完成：best epoch=2，检查点 outputs\early\best.pt
+device=cuda:0 model=misa variant=None stage=single rec_target=self params=481860
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+epoch 001 loss=1.1449 clean[f1=0.5806] missing[f1=0.6066 mae=0.6237 r=0.6297] score=0.6566 (4s)
+epoch 002 loss=0.9501 clean[f1=0.6082] missing[f1=0.6087 mae=0.6474 r=0.6384] score=0.6723 (3s)
+epoch 003 loss=0.9012 clean[f1=0.5922] missing[f1=0.5902 mae=0.6247 r=0.6332] score=0.6545 (4s)
+epoch 004 loss=0.8527 clean[f1=0.5969] missing[f1=0.5899 mae=0.6041 r=0.6355] score=0.6569 (3s)
+epoch 005 loss=0.8156 clean[f1=0.5936] missing[f1=0.5793 mae=0.6125 r=0.6577] score=0.6522 (3s)
+epoch 006 loss=0.7395 clean[f1=0.5926] missing[f1=0.5907 mae=0.6027 r=0.6277] score=0.6544 (3s)
+early stopping at epoch 6（best epoch=2, score=0.6723）
+完成：best epoch=2，检查点 outputs\misa\best.pt
+device=cuda:0 model=dm_cmrn variant=None stage=student rec_target=teacher params=333029
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+已加载教师：outputs\teacher\best.pt
+epoch 001 loss=2.3655 clean[f1=0.5995] missing[f1=0.5881 mae=0.6096 r=0.6009] score=0.6539 (6s)
+epoch 002 loss=1.4741 clean[f1=0.5995] missing[f1=0.5994 mae=0.6025 r=0.6426] score=0.6637 (5s)
+epoch 003 loss=1.3257 clean[f1=0.5957] missing[f1=0.5960 mae=0.6064 r=0.6357] score=0.6594 (5s)
+epoch 004 loss=1.2299 clean[f1=0.6100] missing[f1=0.6119 mae=0.6204 r=0.6269] score=0.6736 (5s)
+epoch 005 loss=1.1467 clean[f1=0.6026] missing[f1=0.6090 mae=0.6095 r=0.6377] score=0.6696 (6s)
+epoch 006 loss=1.1121 clean[f1=0.6122] missing[f1=0.6067 mae=0.5875 r=0.6537] score=0.6748 (6s)
+完成：best epoch=4，检查点 outputs\dm_cmrn\best.pt

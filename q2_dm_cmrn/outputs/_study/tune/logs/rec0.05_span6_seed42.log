@@ -1,0 +1,19 @@
+D:\Anaconda\envs\Lecture2env\lib\site-packages\torch\nn\modules\transformer.py:385: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+device=cuda:0 model=dm_cmrn variant=None stage=student rec_target=teacher params=671429
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+已加载教师：E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\tune\teacher_seed42\best.pt
+epoch 001 loss=2.3670 clean[f1=0.5120 acc=0.5989] missing[f1=0.5096 acc=0.5962 mae=0.7395 r=0.5966] score=0.5705 (7s)
+epoch 002 loss=1.3689 clean[f1=0.5990 acc=0.6126] missing[f1=0.5929 acc=0.6099 mae=0.6185 r=0.6479] score=0.6608 (6s)
+epoch 003 loss=1.2029 clean[f1=0.6308 acc=0.6456] missing[f1=0.6160 acc=0.6332 mae=0.6029 r=0.6522] score=0.6886 (7s)
+epoch 004 loss=1.1003 clean[f1=0.6122 acc=0.6264] missing[f1=0.6133 acc=0.6264 mae=0.5930 r=0.6570] score=0.6785 (7s)
+epoch 005 loss=1.0533 clean[f1=0.6098 acc=0.6305] missing[f1=0.6086 acc=0.6291 mae=0.5881 r=0.6707] score=0.6763 (8s)
+epoch 006 loss=0.9866 clean[f1=0.6249 acc=0.6360] missing[f1=0.6237 acc=0.6360 mae=0.5933 r=0.6673] score=0.6911 (8s)
+epoch 007 loss=0.9410 clean[f1=0.6279 acc=0.6442] missing[f1=0.6157 acc=0.6319 mae=0.5828 r=0.6744] score=0.6892 (7s)
+epoch 008 loss=0.9094 clean[f1=0.6283 acc=0.6332] missing[f1=0.6166 acc=0.6209 mae=0.5898 r=0.6635] score=0.6888 (7s)
+epoch 009 loss=0.8808 clean[f1=0.6057 acc=0.6277] missing[f1=0.5945 acc=0.6195 mae=0.6028 r=0.6598] score=0.6660 (7s)
+epoch 010 loss=0.8252 clean[f1=0.6041 acc=0.6223] missing[f1=0.6130 acc=0.6319 mae=0.6048 r=0.6611] score=0.6746 (7s)
+epoch 011 loss=0.7821 clean[f1=0.5978 acc=0.6099] missing[f1=0.6127 acc=0.6209 mae=0.5910 r=0.6705] score=0.6723 (6s)
+epoch 012 loss=0.7628 clean[f1=0.6013 acc=0.6168] missing[f1=0.6062 acc=0.6209 mae=0.5926 r=0.6694] score=0.6707 (6s)
+early stopping at epoch 12（best epoch=6, score=0.6911）
+完成：best epoch=6，检查点 E:\研究生数学建模\e题代码\naiwa-modeling-team\q2_dm_cmrn\outputs\_study\tune\rec0.05_span6_seed42\best.pt

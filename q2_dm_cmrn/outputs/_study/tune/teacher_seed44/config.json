@@ -1,0 +1,60 @@
+{
+  "training_args": {
+    "data": "E:\\研究生数学建模\\赛题\\E题复杂场景下多模态情感识别的数学建模与算法设计\\E题数据\\附件2-数据集特征文件\\aligned_50.pkl",
+    "data_kind": "aligned",
+    "model": "cross_attn",
+    "variant": "None",
+    "stage": "teacher",
+    "teacher": "None",
+    "warm_start_encoders": "False",
+    "clean_only": "True",
+    "output": "E:\\研究生数学建模\\e题代码\\naiwa-modeling-team\\q2_dm_cmrn\\outputs\\_study\\tune\\teacher_seed44",
+    "epochs": "8",
+    "patience": "3",
+    "min_delta": "0.0",
+    "batch_size": "64",
+    "lr": "0.001",
+    "weight_decay": "0.0001",
+    "hidden": "96",
+    "layers": "2",
+    "nhead": "4",
+    "dropout": "0.2",
+    "ctx_span": "6",
+    "reg_weight": "0.5",
+    "rec_weight": "0.3",
+    "distill_weight": "1.0",
+    "similarity_weight": "0.0",
+    "rec_target": "None",
+    "temperature": "2.0",
+    "no_class_weights": "False",
+    "seed": "44",
+    "device": "auto",
+    "max_train": "0",
+    "max_valid": "0",
+    "num_workers": "0"
+  },
+  "model_kwargs": {
+    "hidden": 96,
+    "layers": 2,
+    "nhead": 4,
+    "dropout": 0.2,
+    "ctx_span": 6
+  },
+  "settings": {
+    "reg_weight": 0.5,
+    "rec_weight": 0.0,
+    "distill_weight": 0.0,
+    "similarity_weight": 0.0,
+    "class_weights": [
+      1.1702860593795776,
+      1.4929639101028442,
+      0.6776447296142578
+    ],
+    "rec_target": "self",
+    "ctx_span": 6,
+    "temperature": 2.0,
+    "clip": 1.0
+  },
+  "best_epoch": 2,
+  "best_score": 0.6699847169387054
+}

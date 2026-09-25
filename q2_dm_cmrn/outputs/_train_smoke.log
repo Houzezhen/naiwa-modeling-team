@@ -1,0 +1,2 @@
+device=cuda:0 model=dm_cmrn variant=None stage=single rec_target=self params=333029
+加载数据：E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl

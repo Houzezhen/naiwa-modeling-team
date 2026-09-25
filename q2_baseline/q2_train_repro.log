@@ -1,0 +1,9 @@
+device=cuda:0; loading E:\研究生数学建模\赛题\E题复杂场景下多模态情感识别的数学建模与算法设计\E题数据\附件2-数据集特征文件\aligned_50.pkl
+train=3395 valid=728; classes=[967, 758, 1670]
+epoch=1 train_loss=1.0920 valid={"accuracy": 0.6153846153846154, "f1_macro": 0.542963321399478, "mae": 0.6209316194558946, "pearson": 0.6121865786654573}
+epoch=2 train_loss=0.8673 valid={"accuracy": 0.6222527472527473, "f1_macro": 0.5560444642095906, "mae": 0.6148078471759928, "pearson": 0.6251651831570807}
+epoch=3 train_loss=0.7676 valid={"accuracy": 0.6153846153846154, "f1_macro": 0.5729243837164734, "mae": 0.6142838141307808, "pearson": 0.6205602096501158}
+epoch=4 train_loss=0.6782 valid={"accuracy": 0.5892857142857143, "f1_macro": 0.5560313493849792, "mae": 0.6379007468777862, "pearson": 0.6092490385382722}
+epoch=5 train_loss=0.6154 valid={"accuracy": 0.6112637362637363, "f1_macro": 0.5855523674970514, "mae": 0.622839741347419, "pearson": 0.6187776419980946}
+epoch=6 train_loss=0.5032 valid={"accuracy": 0.5934065934065934, "f1_macro": 0.5771943440510637, "mae": 0.616982586461805, "pearson": 0.6040081536349833}
+done: q2_train_repro\best_metrics.json

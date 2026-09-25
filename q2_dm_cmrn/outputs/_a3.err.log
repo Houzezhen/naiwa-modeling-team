@@ -1,0 +1,24 @@
+D:\Anaconda\envs\Lecture2env\lib\site-packages\torch\nn\modules\transformer.py:385: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 100/100 [00:00<00:00, 1054.95it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Traceback (most recent call last):
+  File "E:\ÑĞ¾¿ÉúÊıÑ§½¨Ä£\eÌâ´úÂë\naiwa-modeling-team\q2_dm_cmrn\infer_attachment3.py", line 227, in <module>
+    main()
+  File "E:\ÑĞ¾¿ÉúÊıÑ§½¨Ä£\eÌâ´úÂë\naiwa-modeling-team\q2_dm_cmrn\infer_attachment3.py", line 182, in main
+    prepared = prepare_sample(sample, variant, normalizers, args.text_mode, tokenizer, text_model,
+  File "E:\ÑĞ¾¿ÉúÊıÑ§½¨Ä£\eÌâ´úÂë\naiwa-modeling-team\q2_dm_cmrn\infer_attachment3.py", line 112, in prepare_sample
+    nonzero_rows = np.flatnonzero(row_nonzero(raw).any(axis=1))
+  File "D:\Anaconda\envs\Lecture2env\lib\site-packages\numpy\core\_methods.py", line 58, in _any
+    return umr_any(a, axis, dtype, out, keepdims)
+numpy.exceptions.AxisError: axis 1 is out of bounds for array of dimension 1

@@ -11,6 +11,7 @@
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{float}
+\usepackage{indentfirst}
 \usepackage[section]{placeins}
 \usepackage{graphicx}
 \usepackage{subfig}
@@ -23,8 +24,9 @@
 \graphicspath{{figures/}}
 \setmainfont{Times New Roman}
 \setsansfont{Times New Roman}
-\setmonofont{Consolas}
-\setcounter{tocdepth}{2}
+\setmonofont{Times New Roman}
+\urlstyle{same}
+\setcounter{tocdepth}{3}
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \setlength{\parindent}{2em}
@@ -40,8 +42,9 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\bertrevision}{\code{12040acc\allowbreak ade4e8a0\allowbreak f71eabdb\allowbreak 258fecc2\allowbreak e7e948be}}
 \newcommand{\loss}{\mathcal{L}}
+\newcommand{\keymetric}[1]{\textbf{#1}}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
-\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \title{基于公共时间轴与掩码门控融合的多模态情感预测及证据追踪}
 \baominghao{\hspace{6em}待填写}
 \schoolname{\hspace{5.8em}待填写}
@@ -65,14 +68,13 @@
 \clearpage
 \section{问题背景与问题重述}
 \subsection{问题背景分析}
-情感是人机交互中的重要信息。真实视频里的态度与情绪通常由语言内容、声音的节奏和音高、面部表情及动作共同表达；单看转写文本，可能遗漏语气变化，单看声音或画面，也可能失去语义背景。因此，本题以CMU-MOSEI英文多模态数据为基础，要求同时利用文本、语音和视觉信息预测情感极性与强度。
+情感是人机交互中的重要信息。真实视频里的态度与情绪通常由语言内容、声音的节奏和音高、面部表情及动作共同表达；单看转写文本，可能遗漏语气变化，单看声音或画面，也可能失去语义背景。多模态情感计算研究因此强调联合分析多种信号及其交互\cite{poria2016review,baltrusaitis2019multimodal}。本题以CMU-MOSEI英文多模态数据为基础，要求同时利用文本、语音和视觉信息预测情感极性与强度。
 
-将三种信息放入同一模型并非简单拼接。文本按词或token组织，语音按声学帧采样，视觉按视频帧采样；即使特征数组长度相同，相同下标也未必对应同一时刻。真实片段还可能因噪声、遮挡或转写失败而出现局部信息缺失。若把缺失位置当作有效零值，或始终给予三个模态固定权重，预测就可能依赖错误证据。与此同时，模型仅给出类别和强度还不足以复核判断：需要说明当前样本主要参考了哪种模态、哪些时间片段，并能回到原始媒体查看。
+将三种信息放入同一模型并非简单拼接。文本按词或token组织，语音按声学帧采样，视觉按视频帧采样；即使特征数组长度相同，相同下标也未必对应同一时刻。非对齐多模态序列的建模已有专门研究\cite{tsai2019multimodal}。真实片段还可能因噪声、遮挡或转写失败而出现局部信息缺失。若把缺失位置当作有效零值，或始终给予三个模态固定权重，预测就可能依赖错误证据。与此同时，模型仅给出类别和强度还不足以复核判断：需要说明当前样本主要参考了哪种模态、哪些时间片段，并能回到原始媒体查看。
 
 由此形成三个相互衔接的建模难点：异步特征如何在真实时间上对应，局部缺失时如何稳定预测，以及预测依据如何量化并追溯。第一项决定输入是否可信，第二项决定预测是否能应对复杂场景，第三项决定结果是否可审阅。
 
 \subsection{数据介绍与建模目标}
-\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
 \subsubsection{数据介绍}
 赛题提供四组用途不同的材料，见表~\ref{tab:data_roles}。
 
@@ -80,7 +82,7 @@
 \centering
 \caption{赛题附件的数据内容与建模用途}
 \label{tab:data_roles}
-\begin{tabularx}{0.98\textwidth}{c c L L}
+\begin{tabularx}{0.98\textwidth}{c c Y Y}
 \toprule
 附件 & 规模 & 主要内容 & 本文用途 \\
 \midrule
@@ -98,7 +100,6 @@
 
 \subsubsection{建模目标}
 本文以情感极性、连续强度和可追溯证据为最终输出，依次实现三个目标。首先，对附件1建立样本ID、模态特征、有效时间位置与原始媒体之间的对应关系，使跨模态对齐可以核验。其次，利用附件2的训练集学习在局部模态缺失下仍可使用的极性分类和强度回归模型，并以验证集进行选择；缺失类型、位置、时长的影响应分别检验。最后，为每条待解释样本提供主要参考模态、模态作用程度和关键时间窗，将证据映射回文本片段、语音时段或视觉关键帧。分类、回归与解释的具体评价口径在第2节给出。
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
 \subsection{问题重述}
 根据题面，本文需要完成以下三个相互衔接的问题。
@@ -122,7 +123,7 @@
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.98\textwidth]{fig_pipeline}
+\includegraphics[width=0.90\textwidth]{fig_pipeline}
 \caption{三个问题的建模流程及数据关系}
 \label{fig:pipeline}
 \end{figure}
@@ -142,11 +143,11 @@
 \subsection{核心变量与符号}
 下文以样本 $n$、公共窗口 $k$ 和模态 $q$ 为基本索引。表~\ref{tab:symbols} 汇总时间轴、有效掩码、模型权重与两项预测任务所用的主要符号；同一符号在各问题中保持相同含义。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{主要符号及含义}
 \label{tab:symbols}
-\begin{tabularx}{0.98\textwidth}{cL}
+\begin{tabularx}{0.98\textwidth}{cY}
 \toprule
 符号 & 含义 \\
 \midrule
@@ -184,7 +185,7 @@ R_c=\frac{TP_c}{TP_c+FN_c},
 F1_c=\frac{2P_cR_c}{P_c+R_c}.
 \label{eq:class_f1}
 \end{equation}
-\par\indent Macro-F1 为三个类别 F1 的算术平均。由于类别分布可能不均衡，本文将 Macro-F1 作为主分类选择指标，同时报告 Accuracy。
+\par\indent Macro-F1 为三个类别 F1 的算术平均。类别不均衡时，分层检查精确率和召回率比只看总体正确率更有辨识力\cite{zhou2016machinelearning,li2019statisticallearning}。本文将 Macro-F1 作为主分类选择指标，同时报告 Accuracy。
 \par\indent 连续情感强度采用平均绝对误差和 Pearson 相关系数：
 \begin{equation}
 \operatorname{MAE}=\frac{1}{N}\sum_i|y_i^{(r)}-\hat y_i^{(r)}|.
@@ -215,13 +216,13 @@ F1_c=\frac{2P_cR_c}{P_c+R_c}.
 
 \subsection{模型建立：数据组织与公共时间轴}
 本题提供四组用途不同的附件。问题一以附件1原始视频及其转写、标签为输入，保留每条样本的原始ID、文本、音频、视频和标签关系。附件2用于后续训练、验证和独立测试复核；附件3用于缺失模态专项推理，没有真实标签；附件4用于最终预测、证据和视频关键帧回溯，同样没有监督标签。本文所有模型选择只使用附件2训练与验证划分，不使用附件3或附件4的伪标签。
-\par\indent 附件2的三模态张量在统一时间窗后形状分别为 $(100,50,768)$、$(100,50,74)$ 和 $(100,50,35)$。文本的768维特征来自固定版本的 \code{distilbert-\allowbreak{}base-\allowbreak{}uncased}，具体做法是取最后四层隐状态逐元素均值，并对无效token置零。语音特征以16 kHz单声道解码结果为输入，视觉特征以视频窗口中心附近的真实帧为输入。
+\par\indent 附件1的100条样本均映射至50个公共时间窗；文本、语音、视觉特征维度依次为768、74和35。文本特征来自固定版本的 \code{distilbert-\allowbreak{}base-\allowbreak{}uncased}，具体做法是取最后四层隐状态逐元素均值，并对无效token置零。语音特征以16 kHz单声道解码结果为输入，视觉特征以视频窗口中心附近的真实帧为输入。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{三模态输入与时间定位规则}
 \label{tab:modalities}
-\begin{tabularx}{0.98\textwidth}{l c L L}
+\begin{tabularx}{0.98\textwidth}{c c Y Y}
 \toprule
 模态 & 维度 & 特征构成 & 时间定位与缺失规则 \\
 \midrule
@@ -246,16 +247,16 @@ z_{n,k}^{(q)}=\frac{\sum_i |I_{n,k}\cap J_{n,i}^{(q)}|x_{n,i}^{(q)}}{\sum_i |I_{
 \par\indent 若分母为零，则令 $z_{n,k}^{(q)}=0$，同时定义 $m_{n,k}^{(q)}=0$。如果窗口内有至少一个有效观测，则 $m_{n,k}^{(q)}=1$。在后续网络中，特征值和掩码始终成对传递，不允许仅凭数值判断窗口是否缺失。
 \subsection{模型求解：三模态特征提取}
 \subsubsection{文本编码与声学约束定位}
-题目提供了两种文本接口：预计算的 \code{text} 和 token 形式的 \code{text\_bert}。为了避免训练和专项测试接口不一致，最终路线固定采用 \code{text\_bert}。对于每个窗口的token集合 $S_{n,k}$，DistilBERT产生最后四层隐状态 $H^{(1)},\ldots,H^{(4)}$，文本表示为
+题目提供了两种文本接口：预计算的 \code{text} 和 token 形式的 \code{text\_bert}。分布式词表示与上下文预训练编码为文本序列建模提供了基础\cite{mikolov2013distributed,devlin2019bert,zong2013statisticalnlp}；本文使用的具体编码器为DistilBERT\cite{sanh2019distilbert}。为了避免训练和专项测试接口不一致，最终路线固定采用 \code{text\_bert}。对于每个窗口的token集合 $S_{n,k}$，DistilBERT产生最后四层隐状态 $H^{(1)},\ldots,H^{(4)}$，文本表示为
 \begin{equation}
 z_{n,k}^{(t)}=\frac{1}{|S_{n,k}|}\sum_{j\in S_{n,k}}\frac{1}{4}\sum_{r=1}^{4}H_{n,j}^{(r)}.
 \label{eq:text}
 \end{equation}
-\par\indent 由于没有人工词级起止时间戳，本文不宣称获得 gold 词边界。实际实现采用单调词序分配与CTC后验筛选：先按词元长度和标点停顿构造相对时长，再将其累计映射到视频时长；对存在声学候选的片段保留CTC路径，平均后验低于0.50的样本不进入文本有效窗口。此处的“对齐”指可复现的弱或半强约束，而不是人工验证级强制对齐。
+\par\indent 由于没有人工词级起止时间戳，本文不宣称获得 gold 词边界。实际实现采用单调词序分配与CTC后验筛选\cite{graves2006connectionist}：先按词元长度和标点停顿构造相对时长，再将其累计映射到视频时长；对存在声学候选的片段保留CTC路径，平均后验低于0.50的样本不进入文本有效窗口。此处的“对齐”指可复现的弱或半强约束，而不是人工验证级强制对齐。
 \subsubsection{语音窗口特征提取}
 音频先由PyAV转换为16 kHz、单声道浮点PCM。每个公共窗口内部使用25 ms帧长、10 ms帧移和512点FFT。74维描述符由以下部分组成：
 \begin{enumerate}[label=(\alph*)]
-\item 20维MFCC的均值和标准差，共40维，用于表征谱包络与发音差异；
+\item 20维MFCC的均值和标准差，共40维，用于表征谱包络与发音差异\cite{davis1980comparison}；
 \item 12维Chroma的均值，共12维，用于捕捉音高类别和和声结构；
 \item 频谱质心、带宽、滚降点、平坦度、谱熵、谱通量、低频能量比和高频能量比的均值与标准差，共16维；
 \item 70--400 Hz谱峰基频的均值和标准差，共2维；
@@ -265,11 +266,11 @@ z_{n,k}^{(t)}=\frac{1}{|S_{n,k}|}\sum_{j\in S_{n,k}}\frac{1}{4}\sum_{r=1}^{4}H_{
 \subsubsection{视觉关键帧特征提取}
 视觉特征从窗口中心附近真实帧提取。首先将视频帧缩放至宽度不超过320像素，随后使用传统人脸检测获取人脸存在性和归一化框几何；同时计算全帧亮度、HSV颜色、边缘、梯度、拉普拉斯和图像熵等统计；最后通过相邻窗口或稠密光流构造运动量。35维特征的组成见表~\ref{tab:vision_features}。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{35维视觉特征构成}
 \label{tab:vision_features}
-\begin{tabularx}{0.95\textwidth}{c L c}
+\begin{tabularx}{0.95\textwidth}{c Y c}
 \toprule
 组别 & 描述 & 维数 \\
 \midrule
@@ -286,7 +287,7 @@ z_{n,k}^{(t)}=\frac{1}{|S_{n,k}|}\sum_{j\in S_{n,k}}\frac{1}{4}\sum_{r=1}^{4}H_{
 \subsection{对齐结果与典型样本核验}
 \subsubsection{时间结构与模态覆盖率核验}
 最终输出包含5000个公共窗口。时间结构核验显示，100\%样本的第一个窗口从0开始，100\%样本的窗口连续，100\%样本的最后一个窗口终点等于媒体实际时长，窗口正时长率为100\%。词级记录共有1629条，边界越界率、非正时长率、非单调率和重叠率均为0。
-\par\indent 模态覆盖率如图~\ref{fig:alignment_quality} 所示。语音有效窗率99.00\%，视觉有效窗率99.80\%，文本有效窗率58.68\%，反映转写、声学支持与保守屏蔽规则共同造成的缺失。文本缺失被显式保留并由模型掩码处理，而不是被错误填成全程有效。
+\par\indent 模态覆盖率如图~\ref{fig:alignment_quality} 所示。语音有效窗率\keymetric{99.00\%}，视觉有效窗率\keymetric{99.80\%}，文本有效窗率\keymetric{58.68\%}，反映转写、声学支持与保守屏蔽规则共同造成的缺失。文本缺失被显式保留并由模型掩码处理，而不是被错误填成全程有效。
 
 \begin{figure}[H]
 \centering
@@ -336,14 +337,15 @@ z_{n,k}^{(t)}=\frac{1}{|S_{n,k}|}\sum_{j\in S_{n,k}}\frac{1}{4}\sum_{r=1}^{4}H_{
 \begin{equation}
 e_{n,k}^{(q)}=\operatorname{GELU}(W_q\tilde z_{n,k}^{(q)}+b_q)\odot m_{n,k}^{(q)}.
 \end{equation}
-\par\indent 随后使用两层双向GRU。对正向和反向隐藏状态分别记为 $\overrightarrow h_{n,k}^{(q)}$ 与 $\overleftarrow h_{n,k}^{(q)}$，拼接后得到
+\par\indent 随后使用两层双向GRU，其门控循环单元沿用序列建模中的门控状态更新思想\cite{cho2014learning}。对正向和反向隐藏状态分别记为 $\overrightarrow h_{n,k}^{(q)}$ 与 $\overleftarrow h_{n,k}^{(q)}$，拼接后得到
 \begin{equation}
 h_{n,k}^{(q)}=\operatorname{LayerNorm}\left(e_{n,k}^{(q)}+\operatorname{Dropout}\left([\overrightarrow h_{n,k}^{(q)};\overleftarrow h_{n,k}^{(q)}]\right)\right)\odot m_{n,k}^{(q)}.
 \label{eq:bigru}
 \end{equation}
 \par\indent 双向结构能够同时利用窗口前后的局部变化，对短视频中“先铺垫后转折”的情绪表达尤其重要；残差加法使投影后的瞬时特征不会被循环状态完全覆盖。
+\par\indent 实现中，缺失窗口在进入GRU前被置零，在残差输出和注意力池化时再次由mask排除。这保证无效窗口不会直接获得注意力权重；但GRU仍按完整50窗顺序递推，隐藏状态可能穿过缺失位置，因此该实现不等价于按有效长度压缩序列。本文的缺失实验检验的是这一具体实现的响应，不将其表述为完全消除了缺失窗口对状态传播的影响。
 \subsubsection{有效时间窗注意力}
-对每个模态使用一个线性评分器得到窗口得分
+对每个模态使用一个线性评分器得到窗口得分。注意力机制为不同时间位置分配可学习权重，其基本思想可追溯至序列对齐研究\cite{bahdanau2015neural}：
 \begin{equation}
 s_{n,k}^{(q)}=w_q^{\top}\operatorname{LayerNorm}(h_{n,k}^{(q)})+b_q.
 \end{equation}
@@ -386,7 +388,7 @@ r_n=\operatorname{GELU}\left(\operatorname{LayerNorm}\left(W_f^{(2)}\operatornam
 \hat y_n^{(r)}=W_r r_n+b_r.
 \label{eq:regression_head}
 \end{equation}
-\par\indent 训练损失取交叉熵与Smooth L1回归损失的加权和：
+\par\indent 训练损失取交叉熵与Smooth L1回归损失的加权和。共享表示、分任务输出及反向传播属于深度学习的常见联合训练框架\cite{goodfellow2016deep}：
 \begin{equation}
 \loss=\loss_{\mathrm{CE}}+\lambda_r\loss_{\mathrm{SmoothL1}},\qquad \lambda_r=0.5.
 \label{eq:loss}
@@ -432,12 +434,12 @@ r_n=\operatorname{GELU}\left(\operatorname{LayerNorm}\left(W_f^{(2)}\operatornam
 \subsubsection{监督样本划分与类别比例}
 统一编码特征文件中，训练集、验证集和独立test划分分别包含3395、728和727条带标签样本。三类情感的数量存在一定不均衡：训练集Negative、Neutral、Positive分别为967、758和1670；验证集分别为206、184和338；test分别为207、158和362。Positive占比最高，Neutral相对较少，因此仅报告Accuracy可能掩盖少数类性能，本文坚持同时报告Macro-F1。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \small
 \caption{附件2监督数据的划分与类别结构}
 \label{tab:split_class}
-\begin{tabular}{lrrrrrrr}
+\begin{tabular}{cccccccc}
 \toprule
 划分 & 样本数 & Negative & Neutral & Positive & Negative占比 & Neutral占比 & Positive占比 \\
 \midrule
@@ -460,11 +462,11 @@ Test & 727 & 207 & 158 & 362 & 28.47\% & 21.73\% & 49.79\% \\
 \subsubsection{训练与推理接口一致性审计}
 本文把合规性拆解为数据接口、统计量、模型选择和专项推理四个可检查层次。表~\ref{tab:interface_audit} 不是泛泛的工程说明，而是最终模型能够被复核的原因：每一项都有固定文件、固定规则和明确的失败条件。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{最终模型统一接口审计矩阵}
 \label{tab:interface_audit}
-\begin{tabularx}{0.98\textwidth}{lL L L}
+\begin{tabularx}{0.98\textwidth}{cY Y Y}
 \toprule
 层次 & 统一内容 & 审计证据 & 失败时的处理 \\
 \midrule
@@ -488,14 +490,14 @@ S=F1_{macro}-0.1\times MAE.
 
 \subsection{模型求解与验证集性能}
 \subsubsection{候选模型的验证集筛选}
-表~\ref{tab:candidates} 汇总候选模型的验证结果。固定 baseline 的回归指标较稳，但缺少显式的时间建模和模态解释；残差融合在旧接口下取得较高Macro-F1；最终统一编码注意力—门控模型在四项报告指标上同时超过固定 baseline，满足“复杂度、合规性和性能”三个条件。
+表~\ref{tab:candidates} 汇总六种候选模型在附件2同一验证划分上的单次实验结果。它们的文本表示、时间组织和训练过程并不完全相同，因此先说明每种方法解决的问题，再比较其分类与回归指标；表中数值不能被解释为仅改变一个网络模块的消融实验。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \small
 \caption{候选模型在附件2验证集上的结果}
 \label{tab:candidates}
-\begin{tabular}{lrrrrl}
+\begin{tabular}{cccccc}
 \toprule
 模型 & Accuracy & Macro-F1 & MAE & Pearson & 备注 \\
 \midrule
@@ -504,12 +506,26 @@ Length-aware resampled baseline & 0.614011 & 0.595798 & 0.614132 & 0.620838 & �
 Label-free SSL fusion & 0.608516 & 0.578294 & 0.667391 & 0.573212 & 不选用 \\
 Bidirectional SSL fusion & 0.618132 & 0.598285 & 0.621818 & 0.588408 & 对比模型 \\
 Old residual fusion & 0.622253 & 0.610330 & 0.623941 & 0.601396 & 接口不合规对照 \\
-Final attention-gate model & 0.637363 & 0.601580 & 0.612262 & 0.629628 & 最终主模型 \\
+Final attention-gate model & \keymetric{0.637363} & \keymetric{0.601580} & \keymetric{0.612262} & \keymetric{0.629628} & 最终主模型 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\par\indent 图~\ref{fig:model_comparison} 将固定基线、重采样基线、双向GRU对照和最终模型的四项指标分开展示；未通过统一输入接口审计的旧残差方案仅保留在表~\ref{tab:candidates} 中。最终模型相对固定基线在Accuracy与Macro-F1上更高，在MAE上更低，在Pearson上更高。各模型特征来源并不完全一致，这一对比反映完整系统结果，而非网络结构的单因素增益。
+\par\indent\textbf{固定对齐基线。}该模型直接使用附件2预计算的对齐文本表示、语音和视觉特征。每路经线性投影、局部一维卷积和掩码均值池化，再拼接输入浅层双任务输出；局部卷积能够利用相邻窗口，却没有独立的长程序列编码、时间注意力或动态门控。它以0.588115的Macro-F1和0.616443的MAE提供固定参照，不能因为结构简单就把其回归表现忽略。
+
+\par\indent\textbf{长度感知重采样基线。}该路线先依据未对齐序列的有效长度，将各模态重采样到50个窗口，再使用基线预测网络；它主要改变时间组织，而非引入更复杂的融合器。相对固定对齐基线，Macro-F1提高0.007683、MAE下降0.002311，但Pearson从0.624582降至0.620838。这说明重采样在当前验证划分上改善了部分指标，不能据此认定所有回归性质都更好。
+
+\par\indent\textbf{无标签自监督融合。}该候选先在未对齐数据上通过时间遮挡、特征扰动和表征约束学习单模态GRU编码器，再将其用于对齐数据上的监督融合。无标签预训练不直接优化情感极性或强度；在这组结果中，Macro-F1为0.578294、MAE为0.667391，均劣于固定基线。它说明泛用表征并不会自动保留对情感判别最有用的细节。
+
+\par\indent\textbf{双向自监督融合。}在上述路线中使用双向GRU，使每个窗口同时接收前后语境。其Accuracy和Macro-F1达到0.618132和0.598285，分类指标高于固定基线；但MAE为0.621818、Pearson为0.588408，回归表现没有同步改善。双向上下文带来的分类收益不足以支持“四指标全面提升”的结论。
+
+\par\indent\textbf{旧残差融合。}该模型保留自监督编码器，并增加原始对齐特征的掩码均值和标准差旁路，旁路投影以零初始化，使网络起初不破坏原融合表示。它在历史验证记录中取得0.610330的Macro-F1，为本表最高；然而MAE为0.623941，高于固定基线，而且附件2训练与附件3文本重建使用了不同接口。因此该结果只保留作结构与指标取舍的历史对照，不进入最终合规模型排序。
+
+\par\indent\textbf{最终注意力—门控模型。}该模型固定使用同一revision的DistilBERT重建\code{text\_bert}表示，将三路双向GRU、有效窗口时间注意力和样本级门控连接到分类与强度回归双头。相对固定基线，Accuracy和Macro-F1分别增加0.024726和0.013465，MAE下降0.004181，Pearson增加0.005046；四项方向均有利，且训练与专项推理接口一致。两者文本特征版本不同，这些差异只支持完整系统比较，不构成门控或注意力单项增益的证明。
+
+\par\indent 从指标取舍看，重采样与双向自监督融合均提高了Macro-F1，但只有重采样同时降低MAE；旧残差融合的Macro-F1最高，却有接口不一致和回归误差较高的问题。最终模型的Macro-F1低于旧残差融合0.008750，但在合规候选中同时取得最高Accuracy、最高Pearson和最低MAE。因而最终选择依据是接口一致条件下的多指标平衡，而非任一单项指标的最大值。
+
+\par\indent 图~\ref{fig:model_comparison} 将固定基线、重采样基线、双向GRU对照和最终模型的四项指标分开展示；未通过统一输入接口审计的旧残差方案仅保留在表~\ref{tab:candidates} 中。图中各面板采用各自的数值刻度，应结合表中原值比较，不能只按标记间距判断改进幅度。
 
 \begin{figure}[H]
 \centering
@@ -557,6 +573,7 @@ Final attention-gate model & 0.637363 & 0.601580 & 0.612262 & 0.629628 & 最终�
 \end{figure}
 
 \par\indent 图~\ref{fig:validation_regression} 展示同一验证集的情感强度真实值和预测值；虚线表示理想一致，图中 Pearson 和 MAE 与保存的验证指标一致。真实强度跨越 $[-3,3]$，而预测值在该划分中介于 $[-2.046,1.668]$。对于真实强度不小于2的43条样本，预测均值仅为0.827；这一收缩现象说明模型对强烈积极表达仍倾向于低估。散点图反映的是误差形态，相关性0.630不能被解释为每条样本都接近理想线。
+\par\indent 按真实极性分层重算逐样本回归绝对误差，Negative、Neutral、Positive三组的MAE分别为0.7358、0.4539和0.6232；对应分类召回率为64.56\%、37.50\%和77.51\%。Neutral组的回归误差最低，却有超过六成样本被分错类。这一差异来自分类头与回归头的不同判别目标，也表明不能用回归MAE替代少数类的分类诊断；上述分层值由同一份728条验证预测记录计算，未引入新的测试集或选模步骤。
 
 \begin{figure}[H]
 \centering
@@ -569,11 +586,11 @@ Final attention-gate model & 0.637363 & 0.601580 & 0.612262 & 0.629628 & 最终�
 \subsubsection{缺失类型、位置与时长敏感性}
 严格统一编码候选在 clean 条件下的 Accuracy 为0.619505、Macro-F1为0.578397、MAE为0.632199、Pearson为0.617068。分别遮挡文本、音频或视觉的中间15个窗口，得到如下变化：
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{中间15个窗口缺失敏感性}
 \label{tab:missing}
-\begin{tabular}{lrrrr}
+\begin{tabular}{ccccc}
 \toprule
 场景 & Accuracy & Macro-F1 & MAE & Pearson \\
 \midrule
@@ -604,11 +621,11 @@ Vision middle 15 masked & 0.619505 & 0.577290 & 0.632722 & 0.616544 \\
 \subsubsection{逐模态窗口遮挡响应}
 严格统一编码候选提供了多个窗口屏蔽场景。本文选择每个模态中间15个窗口进行分析，因为中间位置同时包含较长的上下文，能够检验模型是否过分依赖视频开头或结尾。图~\ref{fig:missing_modality} 给出Accuracy和Macro-F1下降量，表~\ref{tab:missing_detail} 给出对应的回归变化。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{15窗口屏蔽的相对变化量}
 \label{tab:missing_detail}
-\begin{tabular}{lrrrr}
+\begin{tabular}{ccccc}
 \toprule
 场景 & $\Delta$Accuracy & $\Delta$Macro-F1 & $\Delta$MAE & $\Delta$Pearson \\
 \midrule
@@ -628,20 +645,21 @@ Vision middle 15 & 0.000000 & -0.001107 & +0.000523 & -0.000503 \\
 \subsubsection{附件2测试集的独立复核}
 附件2 test 划分的历史候选结果显示，固定 aligned baseline 的 Accuracy、Macro-F1、MAE、Pearson 分别为0.650619、0.604127、0.657608、0.653185；旧残差权重为1.0的版本Accuracy和Macro-F1分别为0.657497和0.612718，但它不属于最终统一接口模型。最终统一编码可解释模型的独立 test 复核为 Accuracy 0.664374、Macro-F1 0.590653、MAE 0.658821、Pearson 0.653034。由此可见，最终模型在该划分上Accuracy更高，但Macro-F1和MAE未全部超过 baseline。
 \par\indent 这一区分非常重要：验证集用于选择最终模型并支持本文的主结论，test划分用于独立复核并暴露外部划分下的性能波动。论文不把test上的部分优势夸大为四项全面优于，也不使用test结果反向调参。
+\par\indent 在另一Windows环境中，使用保存的\code{aligned\_baseline.pt}对附件2的727条test样本复算，得到Accuracy 0.650619、Macro-F1 0.604127、MAE 0.657608、Pearson 0.653185，与原记录逐位一致。相同环境以seed 42重新训练固定基线，验证集Macro-F1为0.585552，较保存权重的0.588115低0.002563；其test Macro-F1为0.596685。这区分了“固定权重可复算”和“重新训练数值完全相同”两种复现要求，且新权重未用于本文最终模型选择。
 \subsubsection{验证集收益与测试集波动}
 验证集上最终模型四项指标均超过固定 baseline，但独立test复核并未保持四项全面优势。表~\ref{tab:test_review} 将两种数据用途并列展示。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{验证集选择结果与test独立复核的区别}
 \label{tab:test_review}
-\begin{tabular}{lrrrr|rrrr}
+\begin{tabular}{ccccc|cccc}
 \toprule
 & \multicolumn{4}{c|}{Validation} & \multicolumn{4}{c}{Test} \\
 模型 & Acc & F1 & MAE & $\rho$ & Acc & F1 & MAE & $\rho$ \\
 \midrule
-Fixed baseline & 0.6126 & 0.5881 & 0.6164 & 0.6246 & 0.6506 & 0.6041 & 0.6576 & 0.6532 \\
-Final model & 0.6374 & 0.6016 & 0.6123 & 0.6296 & 0.6644 & 0.5907 & 0.6588 & 0.6530 \\
+Fixed baseline & 0.6126 & 0.5881 & 0.6164 & 0.6246 & 0.6506 & \keymetric{0.6041} & \keymetric{0.6576} & \keymetric{0.6532} \\
+Final model & \keymetric{0.6374} & \keymetric{0.6016} & \keymetric{0.6123} & \keymetric{0.6296} & \keymetric{0.6644} & 0.5907 & 0.6588 & 0.6530 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -694,7 +712,7 @@ evidence_{q,k}=\alpha_{q,k}\cdot\widetilde\delta_q\cdot\max(\Delta_{q,k},0).
 \end{equation}
 \par\indent 视频证据再由PyAV按目标时间导出实际关键帧，清单记录源视频、目标时间、实际帧时间、误差和SHA-256。
 \subsection{解释结果验证与典型样本}
-在附件2验证集随机抽取128条样本，对每个模态比较注意力最高窗口与一个随机窗口的置信度下降。最终结果为：最大影响窗口平均下降0.010919，随机窗平均下降0.001215，Top-Random为0.009704。正值表明注意力排序能够找到比随机位置更敏感的局部证据，但它仍然是模型行为解释，不等价于真实人类因果机制。
+在附件2验证集随机抽取128条样本，对每个模态比较注意力最高窗口与一个随机窗口的置信度下降。最终结果为：最大影响窗口平均下降\keymetric{0.010919}，随机窗平均下降\keymetric{0.001215}，Top-Random为\keymetric{0.009704}。正值表明注意力排序能够找到比随机位置更敏感的局部证据，但它仍然是模型行为解释，不等价于真实人类因果机制。
 
 \begin{figure}[H]
 \centering
@@ -728,7 +746,7 @@ evidence_{q,k}=\alpha_{q,k}\cdot\widetilde\delta_q\cdot\max(\Delta_{q,k},0).
 
 \subsection{附件4预测与证据追踪}
 \subsubsection{极性与强度预测分布}
-附件4共20条无标签样本。根据最终模型的\code{q3\_predictions.csv}逐项核对，预测类别 Negative、Neutral、Positive 分别为8、3、9条，连续强度平均值为-0.131304。图~\ref{fig:attachment4} 的右侧每个点对应一条独立样本，颜色表示预测极性，纵坐标表示回归强度；样本序号没有时间连续性，因此不连接相邻点。20条样本的预测强度介于 $-2.108$ 和 $1.218$，负向预测中也有接近零的样本。极性类别与连续强度来自两个输出头，不能把强度正负当成类别标签的硬阈值。文本贡献在多数样本中较高，但也存在语音和视觉贡献升高的样本，说明门控并未固定使用单一模态。
+附件4共20条无标签样本。根据最终模型的\code{q3\_predictions.csv}逐项核对，预测类别 Negative、Neutral、Positive 分别为8、3、9条，连续强度平均值为-0.131304。图~\ref{fig:attachment4} 的右侧每个点对应一条独立样本，颜色表示预测极性，纵坐标表示回归强度；样本序号没有时间连续性，因此不连接相邻点。20条样本的预测强度介于 $-2.108$ 和 $1.218$，负向预测中也有接近零的样本。极性类别与连续强度来自两个输出头，不能把强度正负当成类别标签的硬阈值。20条样本的主模态均为文本；文本、语音、视觉门控权重均值分别为0.662、0.181和0.157。虽然语音权重最高达到0.409、视觉权重最高达到0.274，两者均未成为该批样本的最大门控项。因此该批结果揭示了文本依赖倾向，不能作为三种模态主导地位均衡的证据。
 
 \begin{figure}[H]
 \centering
@@ -740,11 +758,11 @@ evidence_{q,k}=\alpha_{q,k}\cdot\widetilde\delta_q\cdot\max(\Delta_{q,k},0).
 \subsubsection{代表样本的预测核验}
 附件4无标签，但可以对结构化输出进行案例层面的人工复核。表~\ref{tab:case_review} 选择若干具有不同极性和强度的样本，记录类别、强度和三个门控贡献。表中正负强度并不是概率，而是连续回归头输出，因此可以出现负值。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{附件4代表性样本的结构化预测}
 \label{tab:case_review}
-\begin{tabular}{c l r l rrr}
+\begin{tabular}{ccccccc}
 \toprule
 ID & 类别 & 强度 & 主模态 & 文本 & 语音 & 视觉 \\
 \midrule
@@ -789,12 +807,12 @@ ID & 类别 & 强度 & 主模态 & 文本 & 语音 & 视觉 \\
 \subsection{预测收益与计算代价}
 固定 baseline 的优点是小、快、可解释，但它把所有窗口和模态的作用近似压缩成静态统计；端到端视频Transformer虽然表达能力更强，却需要更大数据规模和更高计算成本。本文采用三路BiGRU、掩码注意力和门控融合，是一种中等复杂度方案。其参数量主要由三路投影和GRU决定，时间复杂度随50窗口线性增长，训练和推理仍可在常规GPU或CPU环境完成。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \small
 \caption{模型复杂度的定性比较}
 \label{tab:complexity}
-\begin{tabular}{lccccl}
+\begin{tabular}{cccccc}
 \toprule
 方案 & 时间建模 & 缺失掩码 & 模态自适应 & 解释出口 & 复杂度 \\
 \midrule
@@ -833,11 +851,11 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \end{equation}
 \par\indent 其中 $K=50$ 固定，注意力和门控只增加线性池化及 $H$ 维多层感知机开销，不产生 $K\times K$ 的全局时空注意力矩阵。因此，模型处于“明显高于静态 baseline、但仍可在普通 GPU 或 CPU 上复核”的中等复杂度区间。复杂度审计结果见表~\ref{tab:complexity_count}。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{最终模型与固定 baseline 的定量复杂度}
 \label{tab:complexity_count}
-\begin{tabular}{lrrl}
+\begin{tabular}{cccc}
 \toprule
 模块或方案 & 参数量 & 相对 baseline & 作用 \\
 \midrule
@@ -848,7 +866,7 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 掩码时间注意力 & 1155 & -- & 局部证据排序 \\
 门控与融合层 & 182147 & -- & 模态可靠性与交互 \\
 分类、回归输出头 & 516 & -- & 双任务预测 \\
-最终层次融合模型 & 744202 & 7.00 & 复杂主模型 \\
+最终层次融合模型 & \keymetric{744202} & \keymetric{7.00} & 复杂主模型 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -898,12 +916,12 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \end{equation}
 \par\indent 只有 $\operatorname{Admit}(r)=1$ 的候选才进入最终性能排序；在多个候选均通过时，再使用问题二建模阶段定义的 $S=F1_{macro}-0.1\times MAE$ 进行排序。该规则避免出现“旧模型指标略高，所以忽略接口不一致”的倒置逻辑，也避免为了满足复杂度要求而盲目增加网络层数。最终 attention--gate 模型的通过证据汇总于表~\ref{tab:admission}。
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \small
 \caption{最终主模型的五道准入门槛}
 \label{tab:admission}
-\begin{tabularx}{0.96\textwidth}{lL L}
+\begin{tabularx}{0.96\textwidth}{cY Y}
 \toprule
 门槛 & 通过证据 & 不通过时的处理 \\
 \midrule
@@ -924,12 +942,11 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \item 50窗公共时间轴是多模态建模的基础。通过半开区间与重叠时长加权，文本、语音和视觉可以映射到统一索引；通过显式mask可以区分真实零值与缺失。100条样本的时间结构和掩码一致性均通过审计，音视频覆盖率达到99.00\%和99.80\%。
 \item 统一输入接口是严格比较的前提。最终模型固定使用 \code{text\_bert+aligned\_50}，文本编码版本、特征规则、掩码和归一化统计量在训练、验证和专项推理中保持一致；旧 residual 模型不再作为最终结果。
 \item 三路双向GRU、模态内时间注意力和样本级模态门控构成了适度复杂的层次融合模型。它不只是增加参数，而是分别对应时间依赖、局部证据和模态可靠性三个问题。
-\item 在附件2验证集上，最终模型四项报告指标均超过固定对齐 baseline：Accuracy 0.637363、Macro-F1 0.601580、MAE 0.612262、Pearson 0.629628。
-\item 通过注意力最高窗与随机窗的反事实遮挡比较，Top-Random为0.009704，说明模型可为预测提供局部证据；但该结果仍属于模型行为解释，不能替代人工因果验证。
+\item 在附件2验证集上，最终模型四项报告指标均超过固定对齐 baseline：Accuracy \keymetric{0.637363}、Macro-F1 \keymetric{0.601580}、MAE \keymetric{0.612262}、Pearson \keymetric{0.629628}。
+\item 通过注意力最高窗与随机窗的反事实遮挡比较，Top-Random为\keymetric{0.009704}，说明模型可为预测提供局部证据；但该结果仍属于模型行为解释，不能替代人工因果验证。
 \end{enumerate}
 \par\indent 总体而言，本文最终方案在合规性、模型复杂度、预测性能和可解释性之间取得了平衡，适合作为附件2监督预测与附件4专项证据生成的统一主模型。后续若获得人工词级时间戳和更大规模标注数据，可进一步从对齐金标准和跨域泛化两方面提升模型可信度。
 
-\nocite{cho2014learning,devlin2019bert,sanh2019distilbert,bahdanau2015neural,graves2006connectionist,davis1980comparison,poria2016review,goodfellow2016deep,mikolov2013distributed}
 \bibliographystyle{gmcm}
 \bibliography{reference}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
@@ -937,8 +954,9 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \section{数据字段与交付文件}
 \renewcommand{\thesubsection}{A\thinskip.\thinskip\arabic{subsection}}
 \subsection{输入特征、掩码与标签字段}
+\begingroup
 \small
-\begin{longtable}{p{0.27\textwidth}p{0.18\textwidth}p{0.43\textwidth}}
+\begin{longtable}{C{0.27\textwidth}C{0.18\textwidth}C{0.43\textwidth}}
 \caption{最终数据字典}\label{tab:data_dictionary}\\
 \toprule 字段 & 形状或类型 & 说明 \\
 \midrule
@@ -959,9 +977,11 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \code{q3\_explainable\_\allowbreak best.pt} & checkpoint & 最终统一编码复杂主模型 \\
 \bottomrule
 \end{longtable}
+\endgroup
 \subsection{预测、解释与论文交付文件}
-\scriptsize
-\begin{longtable}{p{0.34\textwidth}p{0.50\textwidth}}
+\begingroup
+\footnotesize
+\begin{longtable}{C{0.34\textwidth}C{0.50\textwidth}}
 \caption{论文与模型输出文件}\label{tab:file_manifest}\\
 \toprule 文件 & 用途 \\
 \midrule
@@ -979,6 +999,7 @@ P_{\mathrm{final}}=112640+446976+768+1155+50435+131712+516=744202.
 \code{make\_figures.py} & 本论文全部图表生成脚本 \\
 \bottomrule
 \end{longtable}
+\endgroup
 \clearpage
 \section{核验规则与关键算法}
 \renewcommand{\thesubsection}{B\thinskip.\thinskip\arabic{subsection}}
@@ -1029,10 +1050,10 @@ for modality in modalities:
 \end{Python}
 \subsection{结果一致性审计规则}
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
 \caption{关键审计规则与通过标准}
-\begin{tabularx}{0.96\textwidth}{lL L}
+\begin{tabularx}{0.96\textwidth}{cY Y}
 \toprule
 类别 & 检查项 & 通过标准 \\
 \midrule
@@ -1049,10 +1070,11 @@ for modality in modalities:
 \section{模型配置与训练记录}
 \renewcommand{\thesubsection}{C\thinskip.\thinskip\arabic{subsection}}
 
-\begin{table}[htp]
+\begin{table}[H]
 \centering
+\small
 \caption{最终模型超参数}
-\begin{tabular}{ll}
+\begin{tabular}{cc}
 \toprule 参数 & 取值 \\
 \midrule
 文本编码器 & distilbert-base-uncased \\
@@ -1073,7 +1095,9 @@ Batch size & 64 \\
 \end{table}
 
 \subsection{候选模型验证记录}
-\begin{longtable}{lrrrrr}
+\begingroup
+\small
+\begin{longtable}{cccccc}
 \caption{主要候选模型的验证记录}\label{tab:train_records}\\
 \toprule 模型 & Accuracy & Macro-F1 & MAE & Pearson & 选择结论 \\
 \midrule
@@ -1086,11 +1110,13 @@ Length-aware baseline & 0.614011 & 0.595798 & 0.614132 & 0.620838 & 对比 \\
 Label-free SSL & 0.608516 & 0.578294 & 0.667391 & 0.573212 & 放弃 \\
 Bidirectional SSL & 0.618132 & 0.598285 & 0.621818 & 0.588408 & 对比 \\
 Old residual fusion & 0.622253 & 0.610330 & 0.623941 & 0.601396 & 历史 \\
-Final attention-gate & 0.637363 & 0.601580 & 0.612262 & 0.629628 & 最终 \\
+Final attention-gate & \keymetric{0.637363} & \keymetric{0.601580} & \keymetric{0.612262} & \keymetric{0.629628} & 最终 \\
 \bottomrule
 \end{longtable}
+\endgroup
 \subsection{软件环境与版本}
-\begin{tabularx}{0.95\textwidth}{lL}
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{cY}
 \toprule 软件或硬件 & 版本或说明 \\
 \midrule
 Python & D:/Anaconda3/envs/pytorch/python.exe \\
@@ -1102,10 +1128,11 @@ PyAV & 12.3.0 \\
 输出格式 & CSV、JSON、PNG、PDF、checkpoint \\
 \bottomrule
 \end{tabularx}
+\end{center}
 \clearpage
 \section{附件4预测与证据记录}
 \renewcommand{\thesubsection}{D\thinskip.\thinskip\arabic{subsection}}
-\begin{longtable}{c l r l r r r}
+\begin{longtable}{ccccccc}
 \caption{附件4前20条样本的预测摘要}\label{tab:attachment4_records}\\
 \toprule ID & 类别 & 强度 & 主模态 & 文本贡献 & 语音贡献 & 视觉贡献 \\
 \midrule
@@ -1120,23 +1147,24 @@ PyAV & 12.3.0 \\
 05 & Positive & 1.022 & text & 0.709 & 0.109 & 0.182 \\
 06 & Positive & 0.052 & text & 0.550 & 0.298 & 0.152 \\
 07 & Positive & 0.666 & text & 0.681 & 0.226 & 0.093 \\
-08 & Positive & 0.467 & text & 0.683 & 0.171 & 0.146 \\
-09 & Positive & 0.559 & text & 0.658 & 0.189 & 0.153 \\
-10 & Positive & 0.101 & text & 0.604 & 0.202 & 0.194 \\
-11 & Positive & 0.719 & text & 0.713 & 0.165 & 0.122 \\
-12 & Negative & -0.176 & text & 0.490 & 0.299 & 0.211 \\
-13 & Positive & 0.411 & text & 0.638 & 0.224 & 0.138 \\
-14 & Positive & 0.327 & text & 0.671 & 0.185 & 0.144 \\
-15 & Positive & 0.892 & text & 0.698 & 0.144 & 0.158 \\
-16 & Positive & 0.340 & text & 0.611 & 0.225 & 0.164 \\
-17 & Positive & 0.581 & text & 0.650 & 0.218 & 0.132 \\
-18 & Neutral & 0.112 & text & 0.599 & 0.224 & 0.177 \\
-19 & Positive & 0.741 & text & 0.672 & 0.192 & 0.136 \\
-20 & Positive & 0.268 & text & 0.630 & 0.237 & 0.133 \\
+08 & Positive & 0.882 & text & 0.530 & 0.288 & 0.182 \\
+09 & Negative & -2.108 & text & 0.764 & 0.095 & 0.141 \\
+10 & Negative & -1.948 & text & 0.854 & 0.046 & 0.100 \\
+11 & Negative & -1.998 & text & 0.750 & 0.195 & 0.055 \\
+12 & Negative & -0.427 & text & 0.454 & 0.376 & 0.170 \\
+13 & Neutral & 0.287 & text & 0.519 & 0.316 & 0.165 \\
+14 & Positive & 0.843 & text & 0.708 & 0.115 & 0.177 \\
+15 & Positive & 0.912 & text & 0.686 & 0.084 & 0.230 \\
+16 & Negative & -1.994 & text & 0.689 & 0.190 & 0.121 \\
+17 & Positive & 1.218 & text & 0.688 & 0.208 & 0.104 \\
+18 & Negative & -0.534 & text & 0.763 & 0.109 & 0.129 \\
+19 & Positive & 0.177 & text & 0.756 & 0.110 & 0.134 \\
+20 & Positive & 1.112 & text & 0.693 & 0.096 & 0.211 \\
 \bottomrule
 \end{longtable}
 \subsection{局部证据字段释义}
-\begin{tabularx}{0.96\textwidth}{lL}
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{cY}
 \toprule 字段 & 含义 \\
 \midrule
 rank & 当前样本证据排序，1为最高 \\
@@ -1150,6 +1178,7 @@ regression\_change & 屏蔽后的强度预测变化 \\
 frame\_path & 与视觉窗口对应的实际关键帧路径 \\
 \bottomrule
 \end{tabularx}
+\end{center}
 \clearpage
 \section{复现流程与提交前核对}
 \renewcommand{\thesubsection}{E\thinskip.\thinskip\arabic{subsection}}
@@ -1183,6 +1212,7 @@ $manifest = "q2_baseline\\aligned_text_bert_manifest.json"
 \item 检查附件3和附件4没有被用于监督指标或模型选择；
 \item 检查最终PDF正文页数超过30页，并检查图、表、公式和参考文献无越界。
 \end{enumerate}
+\enlargethispage{3\baselineskip}
 \subsection{结果解释与适用范围声明}
 本文的“超过 baseline”特指相同附件2验证划分上，四项指标均优于原始对齐特征的固定 baseline。最终模型的文本接口为 \code{text\_bert+\allowbreak aligned\_50}，两个比较对象的文本特征不同，因此不得把系统级增益归因于纯架构消融。附件2 test 只作独立复核，附件3和附件4无监督标签，不计算监督指标。旧 residual 模型的历史结果不作为最终合规主模型。本声明用于避免混写不同接口、划分和标签条件下的结果。
 \end{appendices}
