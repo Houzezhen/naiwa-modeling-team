@@ -1,17 +1,17 @@
 # 最终论文文件关系说明
 
-本文件说明最终论文的源文件、数据、模型、图表和交付文件之间的关系。所有路径均相对于仓库根目录 `A:\\naiwa-modeling-team`，不依赖当前电脑的绝对路径。
+本文件说明最终论文的源文件、数据、模型、图表和交付文件之间的关系。表内路径均相对于当前仓库根目录，不依赖电脑上的绝对路径。
 
 ## 1. 最终交付物
 
 | 文件 | 作用 |
 |---|---|
-| `output/pdf/多模态情感识别数学建模论文.pdf` | 对外提交的最终 PDF；由 `2026华为杯研赛latex模板/E题论文/main.tex` 编译后复制得到 |
+| `output/pdf/多模态情感识别数学建模论文.pdf` | 对外提交的最新 PDF；由 `2026华为杯研赛latex模板/E题论文/main.tex` 编译后复制得到 |
 | `2026华为杯研赛latex模板/E题论文/main.tex` | 论文唯一主源文件，包含正文、公式、表格、图注、附录和复现实验命令 |
 | `2026华为杯研赛latex模板/E题论文/reference.bib` | 参考文献数据库 |
 | `2026华为杯研赛latex模板/E题论文/gmcmthesis.cls` | 论文模板类文件 |
 
-`2026华为杯研赛latex模板/E题论文/main.pdf` 是本机编译缓存，已保留在本地但不重复上传；Git 中保留 `output/pdf/多模态情感识别数学建模论文.pdf` 作为最终 PDF。
+`2026华为杯研赛latex模板/E题论文/main.pdf` 是本机编译产物；完成编译后将其复制到上述提交 PDF 路径。
 
 ## 2. 文件依赖关系
 
@@ -53,11 +53,15 @@ output/pdf/多模态情感识别数学建模论文.pdf
 | `2026华为杯研赛latex模板/E题论文/nature_plot_style.py` | 统一 Nature 风格、中文字体和高对比配色 |
 | `2026华为杯研赛latex模板/E题论文/make_figures.py` | 生成流程图、模型比较、缺失模态、解释卡、附件4和复杂度图 |
 | `2026华为杯研赛latex模板/E题论文/make_statistical_figures.py` | 生成主模型性能、热力图、混淆矩阵、回归散点图、时间注意力和消融图 |
-| `2026华为杯研赛latex模板/E题论文/make_ppt_diagrams.js` | 用可编辑 PPT 对象绘制中文科技感流程图和模型框图 |
-| `2026华为杯研赛latex模板/E题论文/export_diagram_svgs.js` | 将 PPT 图导出为 SVG，再转换为论文使用的 PDF/PNG |
+| `2026华为杯研赛latex模板/E题论文/make_revision_figures.py` | 最后重绘候选模型、基线对照和验证/测试变化三张比较图，并校验图表数值与论文表格 |
+| `2026华为杯研赛latex模板/E题论文/make_explanatory_figures.py` | 从原始CSV重绘混淆矩阵、缺失位置热力图和附件4分布；仅改变表达，不运行推理或修改数据 |
+| `2026华为杯研赛latex模板/E题论文/make_ppt_diagrams.js` | 绘制模型结构图的可编辑 PPT 对象 |
+| `2026华为杯研赛latex模板/E题论文/export_diagram_svgs.js` | 将原模型结构图 PPT 导出为论文使用的 PDF/PNG |
+| `2026华为杯研赛latex模板/E题论文/make_three_question_roadmap.js` | 参照用户提供的流程图模板，为总路线及三问的问题分析生成四份可编辑 PPT |
+| `2026华为杯研赛latex模板/E题论文/export_three_question_roadmap.ps1` | 使用 PowerPoint 从上述四份 PPT 精确导出 PDF/PNG，其中总路线覆盖 `fig_pipeline.pdf` |
 | `2026华为杯研赛latex模板/E题论文/figures/` | `main.tex` 通过 `\\includegraphics` 插入的最终图形目录 |
 
-其中，柱状图的颜色、深色边框和局部纵轴逻辑写在 `make_figures.py` 与 `make_statistical_figures.py` 中；中文 PPT 框图最终覆盖为 `fig_pipeline.*` 和 `fig_model_architecture.*`。旧的 Python 框图仅输出为 `*_legacy.*`，不会再覆盖最终框图。
+其中，`make_revision_figures.py` 与 `make_explanatory_figures.py` 在其他统计图脚本之后依次执行；源数值不变。模型结构图仍由原 PPT 生成链提供。总流程图及三张问题分析图由新增的 PPT 生成链在最后导出，因此 `fig_pipeline.pdf` 与正文引用的三张分析图均可回溯到对应的可编辑 PPT。
 
 ## 4. 报告和证据文件
 
@@ -81,6 +85,11 @@ python make_statistical_figures.py
 python make_figures.py
 node make_ppt_diagrams.js
 node export_diagram_svgs.js
+python make_revision_figures.py
+python make_explanatory_figures.py
+$env:NODE_PATH = Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules'
+node make_three_question_roadmap.js
+powershell -NoProfile -ExecutionPolicy Bypass -File export_three_question_roadmap.ps1
 xelatex -interaction=nonstopmode -halt-on-error main.tex
 bibtex main
 xelatex -interaction=nonstopmode -halt-on-error main.tex

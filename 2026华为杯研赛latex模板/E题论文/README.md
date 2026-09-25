@@ -11,11 +11,12 @@
 
 ## 编译
 
-图表使用 `nature-figure` 技能的 Python/matplotlib 工作流和统一中文字体。固定基线用深灰、最终模型用深青；文本、语音和视觉分别使用橙、青、蓝，其他候选方案用紫色与金色区分。缺失场景的热力图使用以零为中心的对称对数色阶，数值标签仍为未经变换的真实分数差值。先运行
+图表使用 `nature-figure` 技能的 Python/matplotlib 工作流和统一中文字体。固定基线用深灰、最终模型用深青；文本、语音和视觉分别使用橙、青、蓝，其他候选方案用紫色与金色区分。缺失场景图直接标注真实 Macro-F1 变化（百分点），红色表示下降、绿色表示上升，颜色深浅仅辅助阅读。先运行
 `D:\Anaconda3\envs\pytorch\python.exe make_statistical_figures.py`，再运行
 `D:\Anaconda3\python.exe make_figures.py`。PPT 框图源文件由
 `node make_ppt_diagrams.js` 生成，论文用矢量版本由
-`node export_diagram_svgs.js` 生成，并以 `rsvg-convert` 导出同名 PDF；最后把两张 `*_ppt.pdf` 复制为 `fig_pipeline.pdf` 和 `fig_model_architecture.pdf`，以保持正文使用的框图与可编辑 PPT 一致。
+`node export_diagram_svgs.js` 生成，并以 `rsvg-convert` 导出同名 PDF；模型结构图使用 `fig_model_architecture.pdf`。总流程图以及三个问题分析小节的流程图使用 `make_three_question_roadmap.js` 绘制为四份可编辑 PPT，再由 `export_three_question_roadmap.ps1` 通过 PowerPoint 导出为论文中的 `fig_pipeline.pdf`、`fig_problem1_analysis.pdf`、`fig_problem2_analysis.pdf` 和 `fig_problem3_analysis.pdf`。这一步应在旧图表脚本之后运行，以免总流程图被旧版覆盖。
+之后运行 `python make_revision_figures.py` 和 `python make_explanatory_figures.py`，重绘的统计图均直接取自保存的结果 CSV，不修改数据或重新推理。
 数值图的逐样本结果与消融记录保存在 `figures/source_*.csv`、
 `figures/source_representative_sample.json`；缺失热力图是统一编码候选的敏感性审计，
 而非最终模型的缺失性能。视频证据仅在展示图中统一裁切画面下缘约 13% 以避开原片外文水印，原始关键帧和证据清单不做修改。所有验证集比较均为单次训练的描述性结果，不标记显著性。
@@ -32,7 +33,7 @@ A:\texlive\2026\bin\windows\xelatex.exe -interaction=nonstopmode main.tex
 ```
 
 最终 PDF 为 `main.pdf`，提交副本位于：
-`A:\naiwa-modeling-team\output\pdf\多模态情感识别数学建模论文.pdf`。
+`B:\houzez\naiwa-modeling-team\output\pdf\多模态情感识别数学建模论文.pdf`。
 
 ## 结果口径
 

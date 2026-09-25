@@ -1,0 +1,5 @@
+﻿model,source_model,accuracy,f1_macro,mae,pearson,source
+固定对齐基线,Fixed aligned baseline,0.612637,0.588115,0.616443,0.624582,q2_baseline/REPORT.md
+长度感知重采样,Length-aware resampled baseline,0.614011,0.595798,0.614132,0.620838,q2_baseline/REPORT.md
+双向 GRU 融合,Bidirectional SSL fusion,0.618132,0.598285,0.621818,0.588408,q2_baseline/REPORT.md
+最终注意力门控,Final attention-gate model,0.6373626373626373,0.601580292794028,0.6122622476829277,0.6296277039079228,q3_explainability/q3_aligned_text_bert_final/validation.json
