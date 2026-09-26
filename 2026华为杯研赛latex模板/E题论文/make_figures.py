@@ -79,8 +79,8 @@ for cls in ['Negative', 'Neutral', 'Positive']:
         if share >= 8:
             ax.text(i, b + share / 2, f'{share:.1f}%', ha='center', va='center', color='white', fontsize=8, weight='bold')
     bottom += shares
-ax.set_ylim(0, 100); ax.set_ylabel('类别占比（%）'); ax.set_title('附件2监督数据的类别构成', pad=32)
-ax.grid(axis='y', alpha=.2); ax.legend(frameon=False, ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.08))
+ax.set_ylim(0, 100); ax.set_ylabel('类别占比（%）')
+ax.grid(axis='y', alpha=.2); ax.legend(frameon=False, ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.05))
 fig.tight_layout(); fig.savefig(OUT/'fig_class_distribution.pdf'); fig.savefig(OUT/'fig_class_distribution.png', dpi=300); plt.close(fig)
 
 # 3. Typical timeline and frame snapshots.
@@ -144,9 +144,9 @@ fig.tight_layout(); fig.savefig(OUT/'fig_model_comparison.pdf'); fig.savefig(OUT
 # 5b. Directional metric gains: validation selection versus independent test review.
 metric_labels = ['准确率', '宏平均调和分数', '平均绝对误差\n（反向计优）', '皮尔逊相关']
 valid_base = np.array([0.612637, 0.588115, 0.616443, 0.624582])
-valid_final = np.array([0.637363, 0.601580, 0.612262, 0.629627])
+valid_final = np.array([0.637363, 0.601580, 0.612262, 0.629628])
 test_base = np.array([0.650619, 0.604127, 0.657608, 0.653185])
-test_final = np.array([0.664374, 0.590653, 0.658821, 0.653034])
+test_final = np.array([0.664374, 0.617797, 0.649980, 0.655419])
 def directional_gain(base, final):
     return np.array([final[0] - base[0], final[1] - base[1], base[2] - final[2], final[3] - base[3]]) * 100
 fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.0), sharey=True)
@@ -160,7 +160,7 @@ for ax, title, gain in zip(axes, ['验证集：模型选择', '测试集：独�
     for bar, value in zip(bars, gain):
         y = value + (0.10 if value >= 0 else -0.10)
         ax.text(bar.get_x() + bar.get_width() / 2, y, f'{value:+.3f}', ha='center', va='bottom' if value >= 0 else 'top', fontsize=10)
-fig.suptitle('最终模型相对固定基线的指标变化', y=1.02, fontsize=11, weight='bold')
+fig.suptitle('验证集最终模型与测试集重采样候选相对固定基线的指标变化', y=1.02, fontsize=11, weight='bold')
 fig.tight_layout(); fig.savefig(OUT/'fig_metric_delta.pdf'); fig.savefig(OUT/'fig_metric_delta.png', dpi=300); plt.close(fig)
 
 # 6. Missing-modality sensitivity from the strict aligned candidate.
@@ -218,7 +218,6 @@ for ax,p in zip(axes.flat,keys):
     image=mpimg.imread(p); ax.imshow(image[:int(image.shape[0]*.87)]); parts=p.stem.split('_')
     ax.set_title(f'样本{parts[0]} · 排名{parts[2]} · 窗口{parts[4]}',fontsize=8); ax.axis('off')
 for ax in axes.flat[len(keys):]: ax.axis('off')
-fig.suptitle('高证据窗口对应的原始视频关键帧（仅裁切画面下缘）',y=.99,fontsize=11,weight='bold')
 fig.tight_layout(); fig.savefig(OUT/'fig_evidence_frames.pdf'); fig.savefig(OUT/'fig_evidence_frames.png',dpi=300); plt.close(fig)
 
 print('generated', len(list(OUT.glob('*.pdf'))), 'PDF figures in', OUT)

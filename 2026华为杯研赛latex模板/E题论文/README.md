@@ -37,4 +37,4 @@ A:\texlive\2026\bin\windows\xelatex.exe -interaction=nonstopmode main.tex
 
 ## 结果口径
 
-最终模型在附件 2 验证集相对固定对齐 baseline 的四项指标均改善：Accuracy `0.612637 -> 0.637363`、Macro-F1 `0.588115 -> 0.601580`、MAE `0.616443 -> 0.612262`、Pearson `0.624582 -> 0.629627`。固定 baseline 使用原始 `aligned_features.pkl`，最终模型使用 `aligned_text_bert_features.pkl`；验证划分相同，但文本特征不同，这一优势只能解释为完整系统比较，不能归因于架构单项。附件 2 test、附件 3 和附件 4 的限制及无标签边界在正文中单独报告，不将旧残差融合结果作为最终结论。
+最终模型在附件 2 验证集相对固定对齐 baseline 的四项指标均改善：Accuracy `0.612637 -> 0.637363`、Macro-F1 `0.588115 -> 0.601580`、MAE `0.616443 -> 0.612262`、Pearson `0.624582 -> 0.629628`。固定 baseline 使用原始 `aligned_features.pkl`，最终模型使用 `aligned_text_bert_features.pkl`；验证划分相同，但文本特征不同，这一优势只能解释为完整系统比较，不能归因于架构单项。附件 2 test、附件 3 和附件 4 的限制及无标签边界在正文中单独报告，不将旧残差融合结果作为最终结论。

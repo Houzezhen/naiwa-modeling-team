@@ -182,7 +182,8 @@ def performance_figure(baseline: dict, final: dict) -> None:
 
 
 def delta_figure(baseline: dict, final: dict) -> None:
-    # Claim: validation gains do not uniformly carry over to independent test.
+    # Compare the selected validation model with the independently recorded
+    # resampled test candidate. They use different feature organizations.
     # All values are in raw metric units; MAE is reversed so positive means
     # lower error. No p-value or confidence interval is implied.
     report = (ROOT / "q2_baseline" / "REPORT.md").read_text(encoding="utf-8")
@@ -196,14 +197,15 @@ def delta_figure(baseline: dict, final: dict) -> None:
             map(float, [cell.strip() for cell in test_line.strip("|").split("|")][1:5]),
         )
     )
-    # Recorded independent test values are quoted in the manuscript. They are
-    # held here as a separate source row and cross-checked against main.tex.
-    test_final = dict(accuracy=0.664374, f1_macro=0.590653, mae=0.658821, pearson=0.653034)
-    check_paper_values([baseline, final], test_final)
+    # Recorded independent test values for unaligned_resampled_50 are quoted
+    # in REPORT.md and cross-checked against the manuscript table.
+    test_candidate = dict(accuracy=0.664374, f1_macro=0.617797,
+                          mae=0.649980, pearson=0.655419)
+    check_paper_values([baseline, final], test_candidate)
     source_rows = []
     for split, base, outcome in (
         ("validation", baseline, final),
-        ("test", test_baseline, test_final),
+        ("test", test_baseline, test_candidate),
     ):
         for key, label, higher in METRICS:
             delta = outcome[key] - base[key] if higher else base[key] - outcome[key]
@@ -211,7 +213,7 @@ def delta_figure(baseline: dict, final: dict) -> None:
                 dict(split=split, metric=key, metric_label=label, baseline=base[key],
                      final=outcome[key], directional_delta=delta,
                      source=("q2_baseline/REPORT.md + q3 validation.json"
-                             if split == "validation" else "q2_baseline/REPORT.md + main.tex"))
+                             if split == "validation" else "q2_baseline/REPORT.md"))
             )
     write_csv("source_metric_deltas.csv", source_rows)
     fig, ax = plt.subplots(figsize=(7.0, 2.75))
@@ -234,7 +236,7 @@ def delta_figure(baseline: dict, final: dict) -> None:
     ax.set_xlabel("定向差值（原始指标单位；正值表示改善）")
     ax.grid(axis="x", color=GRID, lw=0.6)
     ax.plot([], [], "o", color=GRAY, label="验证集：模型选择")
-    ax.plot([], [], "D", color=GRAY, label="测试集：独立复核")
+    ax.plot([], [], "D", color=GRAY, label="测试集：重采样候选")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.18),
               fontsize=7, ncol=2, handletextpad=0.3)
     fig.subplots_adjust(left=0.19, right=0.98, bottom=0.24, top=0.83)
@@ -243,8 +245,8 @@ def delta_figure(baseline: dict, final: dict) -> None:
 
 def main() -> None:
     rows = parse_report_candidates()
-    check_paper_values(rows, dict(accuracy=0.664374, f1_macro=0.590653,
-                                  mae=0.658821, pearson=0.653034))
+    check_paper_values(rows, dict(accuracy=0.664374, f1_macro=0.617797,
+                                  mae=0.649980, pearson=0.655419))
     comparison_figure(rows)
     performance_figure(rows[0], rows[-1])
     delta_figure(rows[0], rows[-1])

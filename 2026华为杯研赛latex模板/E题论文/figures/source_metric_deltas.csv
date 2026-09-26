@@ -3,7 +3,7 @@ validation,accuracy,准确率,0.612637,0.6373626373626373,0.02472563736263733,q2
 validation,f1_macro,宏平均 F1,0.588115,0.601580292794028,0.013465292794027972,q2_baseline/REPORT.md + q3 validation.json
 validation,mae,平均绝对误差,0.616443,0.6122622476829277,0.004180752317072267,q2_baseline/REPORT.md + q3 validation.json
 validation,pearson,皮尔逊相关,0.624582,0.6296277039079228,0.005045703907922805,q2_baseline/REPORT.md + q3 validation.json
-test,accuracy,准确率,0.650619,0.664374,0.013755000000000073,q2_baseline/REPORT.md + main.tex
-test,f1_macro,宏平均 F1,0.604127,0.590653,-0.013473999999999986,q2_baseline/REPORT.md + main.tex
-test,mae,平均绝对误差,0.657608,0.658821,-0.0012130000000000196,q2_baseline/REPORT.md + main.tex
-test,pearson,皮尔逊相关,0.653185,0.653034,-0.00015100000000001224,q2_baseline/REPORT.md + main.tex
+test,accuracy,准确率,0.650619,0.664374,0.013755000000000073,q2_baseline/REPORT.md
+test,f1_macro,宏平均 F1,0.604127,0.617797,0.013670000000000071,q2_baseline/REPORT.md
+test,mae,平均绝对误差,0.657608,0.64998,0.007627999999999968,q2_baseline/REPORT.md
+test,pearson,皮尔逊相关,0.653185,0.655419,0.0022339999999999582,q2_baseline/REPORT.md

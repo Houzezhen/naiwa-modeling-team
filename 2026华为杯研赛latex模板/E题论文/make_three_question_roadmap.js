@@ -91,9 +91,6 @@ txt('对齐与掩码规则', 6.71, 2.63, 1.78, .25,
 arrow(4.43, 5.11, 4.43, 5.52, C.teal, 1.4);
 txt('主模型与输入接口', 4.62, 5.20, 1.90, .25,
     { fontSize: 10.2, color: C.teal });
-txt('附件1与附件2是不同样本集合；附件3、附件4只用于专项推理。', .36, 7.86, 9.27, .20,
-    { fontSize: 9.9, color: C.muted, align: 'center' });
-
 function miniDeck(fileName, tag, color, pale, items, footer) {
   const deck = new pptxgen();
   deck.defineLayout({ name: 'ANALYSIS', width: 10, height: 2.52 });
@@ -140,11 +137,6 @@ function miniDeck(fileName, tag, color, pale, items, footer) {
         line: { color, width: 1.65, beginArrowType: 'none', endArrowType: 'triangle' },
       });
     }
-  });
-  page.addText(footer, {
-    x: .43, y: 1.87, w: 9.13, h: .20,
-    margin: 0, fontFace: 'Microsoft YaHei', fontSize: 9.2,
-    color: C.muted, align: 'center', valign: 'mid',
   });
   return deck.writeFile({ fileName: path.join(__dirname, 'figures', fileName) });
 }

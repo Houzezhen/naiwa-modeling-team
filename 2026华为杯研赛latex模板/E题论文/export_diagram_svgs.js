@@ -10,7 +10,8 @@ function text(x, y, value, size = 18, color = C.ink, weight = 400, anchor = 'sta
 function rect(x, y, w, h, fill, stroke = '#D1D5DB', r = 14, sw = 2) { return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`; }
 function line(x1, y1, x2, y2, stroke = C.gray, sw = 2, arrow = false) { return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${sw}"${arrow ? ' marker-end="url(#arrow)"' : ''}/>`; }
 function circle(cx, cy, r, fill = '#fff', stroke = C.blue, sw = 2) { return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`; }
-function header(title, subtitle) { return `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="${C.gray}"/></marker></defs><rect width="1280" height="720" fill="#FFFFFF"/><rect width="1280" height="8" fill="${C.blue}"/>${text(54, 54, title, 30, C.blue, 700)}${text(56, 86, subtitle, 14, C.gray)}`; }
+function arrowDefs() { return `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="${C.gray}"/></marker></defs>`; }
+function header(title, subtitle) { return `${arrowDefs()}<rect width="1280" height="720" fill="#FFFFFF"/><rect width="1280" height="8" fill="${C.blue}"/>${text(54, 54, title, 30, C.blue, 700)}${text(56, 86, subtitle, 14, C.gray)}`; }
 function footer() { return `${text(52, 692, '复杂场景下的多模态情感识别', 10, C.gray)}${text(1230, 692, '可编辑框图对应的矢量图', 10, C.gray, 400, 'end')}`; }
 
 function documentIcon(x, y, color) { return `${rect(x, y, 38, 48, '#fff', color, 4, 2)}${line(x + 8, y + 17, x + 30, y + 17, color, 1.5)}${line(x + 8, y + 27, x + 30, y + 27, color, 1.5)}${line(x + 8, y + 37, x + 23, y + 37, color, 1.5)}`; }
@@ -38,7 +39,7 @@ cards.forEach(([x, color, title, body, icon]) => { pipeline += rect(x, 410, 355,
 pipeline += line(640, 324, 640, 402, C.gray, 2, true) + text(640, 625, '质量审计贯穿预处理、预测与解释全过程', 16, C.blue, 400, 'middle') + footer() + '</svg>';
 fs.writeFileSync(`${OUT}/fig_pipeline_ppt.svg`, pipeline, 'utf8');
 
-let architecture = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">${header('层次化多模态情感预测模型', '三路时序编码 → 模态内证据 → 样本级可靠性 → 双任务输出')}`;
+let architecture = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="340" viewBox="0 105 1280 340">${arrowDefs()}<rect width="1280" height="720" fill="#FFFFFF"/>`;
 const lanes = [[150, C.orange, C.paleOrange, '文本', '768维', documentIcon], [255, C.teal, C.paleTeal, '语音', '74维', micIcon], [360, C.blue, C.paleBlue, '视觉', '35维', cameraIcon]];
 lanes.forEach(([y, color, fill, title, sub, icon]) => {
   architecture += rect(52, y, 135, 72, fill, color, 10, 2) + icon(70, y + 12, color) + text(157, y + 27, title, 14, color, 700, 'middle') + text(157, y + 50, sub, 10, C.gray, 400, 'middle');
@@ -51,6 +52,6 @@ architecture += line(865, 302, 902, 302, C.gray, 2, true) + rect(906, 250, 156, 
 architecture += line(1068, 302, 1100, 232, C.gray, 2, true) + line(1068, 302, 1100, 370, C.gray, 2, true);
 architecture += rect(1104, 180, 165, 106, C.paleBlue, C.blue, 12, 2) + chartIcon(1124, 201, C.blue) + text(1220, 226, '情感极性', 12, C.blue, 700, 'middle') + text(1220, 250, '三类别', 9, C.gray, 400, 'middle');
 architecture += rect(1104, 318, 165, 106, C.paleOrange, C.orange, 12, 2) + chartIcon(1124, 339, C.orange) + text(1220, 364, '情感强度', 12, C.orange, 700, 'middle') + text(1220, 388, '连续数值', 9, C.gray, 400, 'middle');
-architecture += rect(246, 510, 850, 78, C.paleGray, '#D1D5DB', 10, 1) + shieldIcon(270, 522, C.blue) + text(350, 546, '缺失窗口掩码', 14, C.blue, 700) + text(552, 546, '缺失值归零 + 显式有效位置 + 注意力分母掩码', 13, C.ink) + text(640, 645, '解释输出：模态消融 · 注意力排序 · 局部窗口遮挡 · 关键帧追踪', 15, C.orange, 400, 'middle') + footer() + '</svg>';
+architecture += '</svg>';
 fs.writeFileSync(`${OUT}/fig_model_architecture_ppt.svg`, architecture, 'utf8');
 fs.writeFileSync(`${OUT}/fig_model_architecture.svg`, architecture, 'utf8');

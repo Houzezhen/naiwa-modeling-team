@@ -179,12 +179,11 @@ def regression_scatter(actual, estimate, metrics):
     fig, axis = plt.subplots(figsize=(5.6, 4.25))
     lower = min(actual.min(), estimate.min()) - .1
     upper = max(actual.max(), estimate.max()) + .1
-    axis.scatter(actual, estimate, s=12, alpha=.34, color=BLUE, linewidths=0, rasterized=True)
+    axis.scatter(actual, estimate, s=13, alpha=.48, color=BLUE, linewidths=0)
     axis.plot([lower, upper], [lower, upper], linestyle='--', color=ORANGE, lw=1.2, label='完全一致参考线')
     axis.set_xlim(lower, upper); axis.set_ylim(lower, upper)
     axis.set_aspect('equal', adjustable='box')
     axis.set_xlabel('真实情感强度'); axis.set_ylabel('预测情感强度')
-    axis.set_title('最终模型验证集强度预测（728例）')
     axis.text(.03, .97, f"平均绝对误差：{metrics['mae']:.3f}\n皮尔逊相关：{metrics['pearson']:.3f}",
               transform=axis.transAxes, va='top', color=INK, fontsize=9,
               bbox={'boxstyle': 'round', 'facecolor': 'white', 'edgecolor': '#D5DBE5', 'alpha': .95})

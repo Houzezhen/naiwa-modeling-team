@@ -1,4 +1,4 @@
-param([switch]$ExportSvg)
+param([switch]$ExportSvg, [switch]$ModelOnly)
 
 $ErrorActionPreference = 'Stop'
 $figureDir = Join-Path $PSScriptRoot 'figures'
@@ -8,6 +8,7 @@ $figures = @(
     @('fig_problem2_analysis.pptx', 'fig_problem2_analysis'),
     @('fig_problem3_analysis.pptx', 'fig_problem3_analysis')
 )
+if ($ModelOnly) { $figures = @() }
 
 $powerPoint = $null
 $presentation = $null
@@ -48,32 +49,20 @@ try {
         $presentation = $null
     }
 
-    $architectureSvg = Join-Path $figureDir 'fig_model_architecture_ppt.svg'
-    $presentation = $powerPoint.Presentations.Add($false)
-    $presentation.PageSetup.SlideWidth = 960
-    $presentation.PageSetup.SlideHeight = 540
-    $architecture = $presentation.Slides.Add(1, 12)
-    $null = $architecture.Shapes.AddPicture($architectureSvg, $false, $true, 0, 0, 960, 540)
-    $architecture.Export((Join-Path $figureDir 'fig_model_architecture.png'), 'PNG', 2400, 1350)
+    $architecturePptx = Join-Path $figureDir 'fig_model_architecture.pptx'
+    if (-not (Test-Path -LiteralPath $architecturePptx)) {
+        throw "Editable model architecture is missing: $architecturePptx"
+    }
+    $presentation = $powerPoint.Presentations.Open($architecturePptx, $false, $true, $false)
+    $architecture = $presentation.Slides.Item(1)
+    Set-LatinFont $architecture.Shapes
+    $architecture.Export((Join-Path $figureDir 'fig_model_architecture.png'), 'PNG', 2400, 956)
     $presentation.SaveAs((Join-Path $figureDir 'fig_model_architecture.pdf'), 32)
     $presentation.Close()
     $presentation = $null
 
-    foreach ($stem in @('fig_validation_regression', 'fig_temporal_attention', 'fig_ablation_waterfall', 'fig_explanation_card')) {
-        $svgPath = Join-Path $figureDir ($stem + '_times.svg')
-        [xml]$svg = Get-Content -LiteralPath $svgPath -Raw -Encoding UTF8
-        $slideWidth = [double]($svg.svg.width -replace 'pt$', '')
-        $slideHeight = [double]($svg.svg.height -replace 'pt$', '')
-        $presentation = $powerPoint.Presentations.Add($false)
-        $presentation.PageSetup.SlideWidth = $slideWidth
-        $presentation.PageSetup.SlideHeight = $slideHeight
-        $slide = $presentation.Slides.Add(1, 12)
-        $null = $slide.Shapes.AddPicture($svgPath, $false, $true, 0, 0, $slideWidth, $slideHeight)
-        $slide.Export((Join-Path $figureDir ($stem + '.png')), 'PNG', 2400, [int](2400 * $slideHeight / $slideWidth))
-        $presentation.SaveAs((Join-Path $figureDir ($stem + '.pdf')), 32)
-        $presentation.Close()
-        $presentation = $null
-    }
+    # Statistical plots keep the PDFs produced directly by Matplotlib. Reimporting
+    # their SVGs into PowerPoint can drop raster layers and change Latin fonts.
 } finally {
     if ($null -ne $presentation) { $presentation.Close() }
     if ($null -ne $powerPoint) { $powerPoint.Quit() }

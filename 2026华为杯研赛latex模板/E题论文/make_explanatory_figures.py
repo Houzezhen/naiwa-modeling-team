@@ -46,16 +46,15 @@ def confusion() -> None:
     matrix = np.array([[int(row[k]) for k in ("Negative", "Neutral", "Positive")] for row in rows])
     assert matrix.shape == (3, 3) and matrix.sum() == 728
     row_pct = matrix / matrix.sum(axis=1, keepdims=True) * 100
-    cmap = LinearSegmentedColormap.from_list("paper_blue", ["#F5F8FB", "#91BAD5", BLUE])
-    fig, ax = plt.subplots(figsize=(5.0, 3.55))
-    ax.imshow(row_pct, cmap=cmap, vmin=0, vmax=80, aspect="equal")
+    cmap = LinearSegmentedColormap.from_list("paper_blue", ["#F5F9FC", "#B6D5E9", "#76A9CD"])
+    fig, ax = plt.subplots(figsize=(5.45, 3.7))
+    image = ax.imshow(row_pct, cmap=cmap, vmin=0, vmax=80, aspect="equal")
     for i in range(3):
         for j in range(3):
-            color = "white" if row_pct[i, j] > 60 else INK
-            ax.text(j, i - .08, str(matrix[i, j]), ha="center", va="center", color=color,
+            ax.text(j, i - .08, str(matrix[i, j]), ha="center", va="center", color=INK,
                     fontsize=14)
             ax.text(j, i + .23, f"{row_pct[i, j]:.1f}%", ha="center", va="center",
-                    color=color, fontsize=8.5)
+                    color=INK, fontsize=8.5)
     ax.set_xticks(range(3), labels)
     ax.set_yticks(range(3), labels)
     ax.set_xlabel("预测类别")
@@ -65,9 +64,35 @@ def confusion() -> None:
     ax.grid(which="minor", color="white", linewidth=2)
     ax.tick_params(which="minor", bottom=False, left=False)
     ax.tick_params(length=0)
-    fig.text(.52, .01, "每格上方为样本数，下方为该真实类别内占比", ha="center", color=GRAY, fontsize=8)
-    fig.tight_layout(rect=(0, .045, 1, 1))
+    fig.colorbar(image, ax=ax, fraction=.045, pad=.04, label="真实类别内比例（%）")
+    fig.tight_layout()
     save(fig, "fig_validation_confusion")
+
+
+def regression_scatter() -> None:
+    rows = read_csv(OUT / "source_validation_predictions.csv")
+    actual = np.array([float(row["true_intensity"]) for row in rows])
+    estimate = np.array([float(row["predicted_intensity"]) for row in rows])
+    assert len(rows) == 728
+    mae = np.mean(np.abs(actual - estimate))
+    pearson = np.corrcoef(actual, estimate)[0, 1]
+    lower = min(actual.min(), estimate.min()) - .1
+    upper = max(actual.max(), estimate.max()) + .1
+    fig, ax = plt.subplots(figsize=(5.6, 4.25))
+    ax.scatter(actual, estimate, s=13, alpha=.48, color=BLUE, linewidths=0, zorder=2)
+    ax.plot([lower, upper], [lower, upper], linestyle="--", color=ORANGE,
+            linewidth=1.2, label="完全一致参考线")
+    ax.set_xlim(lower, upper)
+    ax.set_ylim(lower, upper)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel("真实情感强度")
+    ax.set_ylabel("预测情感强度")
+    ax.text(.03, .97, f"MAE {mae:.3f}    Pearson {pearson:.3f}",
+            transform=ax.transAxes, va="top", color=INK, fontsize=9,
+            bbox={"boxstyle": "square,pad=.25", "facecolor": "white", "edgecolor": "#D5DBE5", "alpha": .95})
+    ax.legend(loc="lower right", frameon=False, fontsize=8)
+    fig.tight_layout()
+    save(fig, "fig_validation_regression")
 
 
 def missing_heatmap() -> None:
@@ -107,8 +132,7 @@ def missing_heatmap() -> None:
     ax.tick_params(length=0)
     for spine in ax.spines.values():
         spine.set_visible(False)
-    fig.text(.51, .005, "Macro-F1 变化（百分点）：红色下降，绿色上升", ha="center", color=GRAY, fontsize=8)
-    fig.tight_layout(rect=(0, .045, 1, 1))
+    fig.tight_layout()
     save(fig, "fig_missing_heatmap")
 
 
@@ -155,5 +179,6 @@ def attachment4() -> None:
 
 if __name__ == "__main__":
     confusion()
+    regression_scatter()
     missing_heatmap()
     attachment4()
